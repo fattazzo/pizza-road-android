@@ -28,6 +28,7 @@
 package it.pizzaroad.rest.api
 
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
+import it.pizzaroad.BuildConfig
 import it.pizzaroad.app.AppConstants
 import it.pizzaroad.rest.api.oauth.interceptor.OAuthInterceptor
 import okhttp3.OkHttpClient
@@ -52,6 +53,8 @@ object RetrofitBuilder {
         val httpClient = httpClientBuilder
         httpClient.addInterceptor(
             OAuthInterceptor.Builder()
+                .consumerKey(BuildConfig.WOO_CONSUMER_KEY)
+                .consumerSecret(BuildConfig.WOO_CONSUMER_SECRET)
                 .build()
         )
 

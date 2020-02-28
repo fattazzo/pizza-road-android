@@ -53,6 +53,11 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+
+        applicationVariants.all { variant ->
+            variant.buildConfigField "String", "WOO_CONSUMER_KEY", "\"" + getWooConsumerKey() + "\""
+            variant.buildConfigField "String", "WOO_CONSUMER_SECRET", "\"" + getWooConsumerSecret() + "\""
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
@@ -61,7 +66,18 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+}
 
+def getWooConsumerKey() {
+    def Properties props = new Properties()
+    props.load(new FileInputStream(new File('woocommerce.properties')))
+    return props['CONSUMER_KEY']
+}
+
+def getWooConsumerSecret() {
+    def Properties props = new Properties()
+    props.load(new FileInputStream(new File('woocommerce.properties')))
+    return props['CONSUMER_SECRET']
 }
 
 dependencies {
