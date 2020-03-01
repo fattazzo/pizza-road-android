@@ -32,7 +32,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Product(
     @SerializedName("attributes")
-    val attributes: List<Any>,
+    val attributes: List<Attribute>,
     @SerializedName("average_rating")
     val averageRating: String,
     @SerializedName("backordered")
@@ -58,7 +58,7 @@ data class Product(
     @SerializedName("date_on_sale_to")
     val dateOnSaleTo: String,
     @SerializedName("default_attributes")
-    val defaultAttributes: List<Any>,
+    val defaultAttributes: List<DefaultAttribute>,
     @SerializedName("description")
     val description: String,
     @SerializedName("dimensions")
@@ -154,9 +154,77 @@ data class Product(
     @SerializedName("upsell_ids")
     val upsellIds: List<Any>,
     @SerializedName("variations")
-    val variations: List<Any>,
+    val variations: List<Variation>,
     @SerializedName("virtual")
     val virtual: Boolean,
     @SerializedName("weight")
     val weight: String
-)
+) {
+
+    constructor() : this(
+        listOf<Attribute>(),
+        "",
+        false,
+        "",
+        false,
+        "",
+        "",
+        listOf<Category>(),
+        listOf<Any>(),
+        "",
+        "",
+        "",
+        "",
+        listOf<DefaultAttribute>(),
+        "",
+        Dimensions("", "", ""),
+        0,
+        0,
+        "",
+        true,
+        listOf<Any>(),
+        "",
+        false,
+        listOf<Any>(),
+        -1,
+        listOf<Image>(),
+        true,
+        "",
+        Links(listOf(), listOf()),
+        false,
+        0,
+        "",
+        false,
+        0,
+        "",
+        "",
+        "",
+        true,
+        "",
+        0,
+        "",
+        listOf<Int>(),
+        false,
+        "",
+        "",
+        0,
+        false,
+        false,
+        "",
+        "",
+        "",
+        false,
+        "",
+        100,
+        listOf<Any>(),
+        "",
+        "",
+        0,
+        listOf<Any>(),
+        "",
+        listOf<Any>(),
+        listOf<Variation>(),
+        false,
+        ""
+    )
+}

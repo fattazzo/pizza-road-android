@@ -32,13 +32,16 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
 import it.pizzaroad.R
 import it.pizzaroad.activity.BaseActivity
 import it.pizzaroad.app.PizzaRoadApplication
 import it.pizzaroad.app.module.viewmodel.DaggerViewModelFactory
 import it.pizzaroad.databinding.ActivityPizzeriaBinding
+import it.pizzaroad.widget.adapters.product.ProductRecyclerViewAdapter
 import javax.inject.Inject
 
 
@@ -48,7 +51,9 @@ class PizzeriaActivity : BaseActivity<ActivityPizzeriaBinding>(),
     @Inject
     lateinit var viewModelFactory: DaggerViewModelFactory
 
-    lateinit var viewModel: PizzeriaActivityViewModel
+    private lateinit var viewModel: PizzeriaActivityViewModel
+
+    private val productRecyclerViewAdapter = ProductRecyclerViewAdapter(mutableListOf())
 
     override fun getLayoutResID(): Int = R.layout.activity_pizzeria
 
@@ -59,6 +64,7 @@ class PizzeriaActivity : BaseActivity<ActivityPizzeriaBinding>(),
 
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(PizzeriaActivityViewModel::class.java)
+        binding.model = viewModel
 
         initToolbar(binding.toolbar)
 
@@ -74,7 +80,14 @@ class PizzeriaActivity : BaseActivity<ActivityPizzeriaBinding>(),
 
         binding.navView.setNavigationItemSelectedListener(this)
 
-        viewModel.listAll()
+        binding.contentPizzeriaContainer.categoryProductsRecyclerView.setHasFixedSize(true)
+        binding.contentPizzeriaContainer.categoryProductsRecyclerView.layoutManager =
+            LinearLayoutManager(binding.root.context)
+        binding.contentPizzeriaContainer.categoryProductsRecyclerView.adapter =
+            productRecyclerViewAdapter
+        viewModel.products.observe(this, Observer { productRecyclerViewAdapter.setProducts(it) })
+
+        viewModel.loadCategories()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

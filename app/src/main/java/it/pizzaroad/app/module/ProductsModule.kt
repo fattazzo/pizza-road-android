@@ -30,6 +30,7 @@ package it.pizzaroad.app.module
 import android.content.Context
 import dagger.Module
 import dagger.Provides
+import it.pizzaroad.rest.manager.impl.ProductCategoriesManager
 import it.pizzaroad.rest.manager.impl.ProductsManager
 import javax.inject.Singleton
 
@@ -38,7 +39,10 @@ class ProductsModule {
 
     @Provides
     @Singleton
-    fun provideProductsManager(context: Context): ProductsManager {
-        return ProductsManager(context)
-    }
+    fun provideProductsManager(context: Context): ProductsManager = ProductsManager(context)
+
+    @Provides
+    @Singleton
+    fun provideProductCategoriesManager(context: Context): ProductCategoriesManager =
+        ProductCategoriesManager(context)
 }

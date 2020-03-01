@@ -29,8 +29,8 @@
 <resources>
     <color name="colorPrimary">#b5cf52</color>
     <color name="colorPrimaryDark">#217c40</color>
-    <color name="colorAccent">#03DAC5</color>
+    <color name="colorAccent">#e9ff83</color>
 
-    <color name="colorTextPrimary">#FFFFFF</color>
-    <color name="colorTextInverted">#000000</color>
+    <color name="colorTextPrimary">#000000</color>
+    <color name="colorTextInverted">#FFFFFF</color>
 </resources>

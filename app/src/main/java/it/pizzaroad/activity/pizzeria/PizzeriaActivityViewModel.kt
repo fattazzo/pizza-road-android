@@ -28,8 +28,15 @@
 package it.pizzaroad.activity.pizzeria
 
 import android.util.Log
+import androidx.databinding.ObservableBoolean
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import it.pizzaroad.extensions.TAG
 import it.pizzaroad.extensions.ioJob
+import it.pizzaroad.rest.api.models.Category
+import it.pizzaroad.rest.api.models.Product
+import it.pizzaroad.rest.manager.impl.ProductCategoriesManager
 import it.pizzaroad.rest.manager.impl.ProductsManager
 import javax.inject.Inject
 
@@ -38,17 +45,55 @@ import javax.inject.Inject
  *         <p/>
  *         date: 28/02/20
  */
-class PizzeriaActivityViewModel @Inject constructor(private var productsManager: ProductsManager) :
-    ViewModel() {
+class PizzeriaActivityViewModel @Inject constructor(
+    private var productsManager: ProductsManager,
+    private var productCategoriesManager: ProductCategoriesManager
+) : ViewModel() {
 
-    fun listAll() {
+    val categories = MutableLiveData<List<Category>>()
+    val selectedCategory = MutableLiveData<Category>()
 
+    val products = MediatorLiveData<List<Product>>().apply {
+        addSource(selectedCategory) { loadCategoryProducts() }
+    }
+
+    val loadingData = ObservableBoolean(false)
+
+    fun loadCategories(forceRefresh: Boolean = false) {
+
+        if (categories.value.orEmpty().isNotEmpty() && !forceRefresh) {
+            return
+        }
+
+        loadingData.set(true)
         ioJob {
             try {
-                val result = productsManager.list()
-                Log.e("ww", "sww")
-            } catch (e: Exception) {
-                Log.e("aa", "aaa")
+                // 100 items per page load all categories
+                val result = productCategoriesManager.list(100)
+                categories.postValue(result)
+            } finally {
+                loadingData.set(false)
+            }
+        }
+    }
+
+    fun loadCategoryProducts() {
+
+        if (selectedCategory.value == null) {
+            products.postValue(listOf())
+            return
+        }
+
+        Log.e(TAG, "Carico i prodotti per ${selectedCategory.value!!.name}")
+
+        loadingData.set(true)
+        ioJob {
+            try {
+                // 100 items per page load all products
+                val result = productsManager.list(100, selectedCategory.value!!.id.toString())
+                products.postValue(result.value ?: listOf())
+            } finally {
+                loadingData.set(false)
             }
         }
     }

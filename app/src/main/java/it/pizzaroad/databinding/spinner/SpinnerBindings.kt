@@ -1,6 +1,6 @@
 /*
  * Project: Pizza Road
- * File: SplashActivity.kt
+ * File: SpinnerBindings.kt
  *
  * Created by fattazzo
  * Copyright © 2020 Gianluca Fattarsi. All rights reserved.
@@ -25,27 +25,33 @@
  * SOFTWARE.
  */
 
-package it.pizzaroad.activity.splash
+package it.pizzaroad.databinding.spinner
 
-import android.content.Intent
-import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
-import it.pizzaroad.R
-import it.pizzaroad.activity.pizzeria.PizzeriaActivity
+import android.widget.Spinner
+import androidx.databinding.BindingAdapter
+import it.pizzaroad.extensions.SpinnerExtensions
+import it.pizzaroad.extensions.SpinnerExtensions.setSpinnerCategoryEntries
+import it.pizzaroad.extensions.SpinnerExtensions.setSpinnerItemSelectedListener
+import it.pizzaroad.extensions.SpinnerExtensions.setSpinnerValue
+import it.pizzaroad.rest.api.models.Category
 
-/**
- * @author fattazzo
- *         <p/>
- *         date: 28/02/20
- */
-class SplashActivity: AppCompatActivity(R.layout.splash) {
+object SpinnerBindings {
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
+    @JvmStatic
+    @BindingAdapter("categoryEntries")
+    fun Spinner.setCategoryEntries(entries: MutableList<Category>?) {
+        setSpinnerCategoryEntries(entries)
+    }
 
-        Handler().postDelayed({
-            startActivity(Intent(this,PizzeriaActivity::class.java))
-            this.finish()
-        },500)
+    @JvmStatic
+    @BindingAdapter("onItemSelected")
+    fun Spinner.setOnItemSelectedListener(itemSelectedListener: SpinnerExtensions.ItemSelectedListener?) {
+        setSpinnerItemSelectedListener(itemSelectedListener)
+    }
+
+    @JvmStatic
+    @BindingAdapter("newValue")
+    fun Spinner.setNewValue(newValue: Any?) {
+        setSpinnerValue(newValue)
     }
 }

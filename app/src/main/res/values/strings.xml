@@ -40,4 +40,8 @@
     <string name="menu_blog">Blog/Ricette</string>
     <string name="menu_chi_siamo">Chia siamo</string>
 
+    <string name="splash_loading">Caricamento in corso…</string>
+
+    <string name="activity_product_name"></string>
+
 </resources>

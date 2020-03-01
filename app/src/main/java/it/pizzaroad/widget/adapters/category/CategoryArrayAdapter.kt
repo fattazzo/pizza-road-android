@@ -1,6 +1,6 @@
 /*
  * Project: Pizza Road
- * File: SplashActivity.kt
+ * File: CategoryArrayAdapter.kt
  *
  * Created by fattazzo
  * Copyright © 2020 Gianluca Fattarsi. All rights reserved.
@@ -25,27 +25,34 @@
  * SOFTWARE.
  */
 
-package it.pizzaroad.activity.splash
+package it.pizzaroad.widget.adapters.category
 
-import android.content.Intent
-import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
-import it.pizzaroad.R
-import it.pizzaroad.activity.pizzeria.PizzeriaActivity
+import android.content.Context
+import android.text.Html
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.TextView
+import it.pizzaroad.rest.api.models.Category
+
 
 /**
  * @author fattazzo
  *         <p/>
- *         date: 28/02/20
+ *         date: 29/02/20
  */
-class SplashActivity: AppCompatActivity(R.layout.splash) {
+class CategoryArrayAdapter(context: Context, objects: MutableList<Category>) :
+    ArrayAdapter<Category>(context, android.R.layout.simple_spinner_item, objects) {
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
+    override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val label = super.getView(position, convertView, parent) as TextView
+        label.text = getItem(position)?.name
+        return label
+    }
 
-        Handler().postDelayed({
-            startActivity(Intent(this,PizzeriaActivity::class.java))
-            this.finish()
-        },500)
+    override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
+        val label = super.getDropDownView(position, convertView, parent) as TextView
+        label.text = Html.fromHtml(getItem(position)?.name)
+        return label
     }
 }

@@ -111,6 +111,14 @@ dependencies {
     kapt 'com.google.dagger:dagger-compiler:2.25.4'
     kapt 'com.google.dagger:dagger-android-processor:2.25.4'
 
+    // Lottie
+    // https://github.com/airbnb/lottie-android
+    implementation 'com.airbnb.android:lottie:3.4.0'
+
+    // COIL - Coroutine Image Loader
+    // https://github.com/coil-kt/coil/
+    implementation("io.coil-kt:coil:0.9.5")
+
     // Test -----------------------------------------------------------
     testImplementation 'junit:junit:4.12'
 

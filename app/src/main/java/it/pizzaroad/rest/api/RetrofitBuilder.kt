@@ -27,9 +27,14 @@
 
 package it.pizzaroad.rest.api
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+import com.google.gson.reflect.TypeToken
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import it.pizzaroad.BuildConfig
 import it.pizzaroad.app.AppConstants
+import it.pizzaroad.rest.api.json.deserializer.ImageItemDeserializer
+import it.pizzaroad.rest.api.models.Image
 import it.pizzaroad.rest.api.oauth.interceptor.OAuthInterceptor
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -49,6 +54,13 @@ object RetrofitBuilder {
             .writeTimeout(50, TimeUnit.SECONDS)
             .readTimeout(50, TimeUnit.SECONDS)
 
+    private val customGson: Gson by lazy {
+        val type = object : TypeToken<MutableList<Image>>() {}.type
+        GsonBuilder().registerTypeAdapter(type,
+            ImageItemDeserializer()
+        ).create()
+    }
+
     val client: Retrofit by lazy {
         val httpClient = httpClientBuilder
         httpClient.addInterceptor(
@@ -59,7 +71,7 @@ object RetrofitBuilder {
         )
 
         Retrofit.Builder().client(httpClient.build()).baseUrl(AppConstants.REST_API_BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(customGson))
             .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
     }

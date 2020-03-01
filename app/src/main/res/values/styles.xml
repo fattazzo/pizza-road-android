@@ -46,6 +46,8 @@
         <!-- define activities transition animations -->
         <item name="android:windowAnimationStyle">@style/CustomActivityAnimation</item>
 
+        <item name="android:windowContentTransitions">true</item>
+
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >

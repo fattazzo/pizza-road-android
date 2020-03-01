@@ -25,11 +25,13 @@
  * SOFTWARE.
  */
 
-package it.pizzaroad.rest.api.services
+package it.pizzaroad.rest.api.services.products
 
 import it.pizzaroad.rest.api.models.Product
 import retrofit2.Call
 import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
 
 /**
  * @author fattazzo
@@ -38,6 +40,24 @@ import retrofit2.http.GET
  */
 interface ProductsRestService {
 
+    /**
+     * List all products
+     *
+     * This API helps you to view all the products.
+     *
+     * @param itemsPerPage Maximum number of items to be returned in result set. Default is 10.
+     * @param categoryId Limit result set to products assigned a specific category ID.
+     */
     @GET("products")
-    fun list(): Call<List<Product>>
+    fun list(@Query("per_page") itemsPerPage: Int = 10, @Query("category") categoryId: String? = null): Call<List<Product>>
+
+    /**
+     * Retrieve a product
+     *
+     * This API lets you retrieve and view a specific product by ID.
+     *
+     * @param id product id
+     */
+    @GET("products/{id}")
+    fun get(@Path("id") id: Int): Call<Product>
 }

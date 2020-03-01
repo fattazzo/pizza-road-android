@@ -1,6 +1,6 @@
 /*
  * Project: Pizza Road
- * File: SplashActivity.kt
+ * File: InverseSpinnerBindings.kt
  *
  * Created by fattazzo
  * Copyright © 2020 Gianluca Fattarsi. All rights reserved.
@@ -25,27 +25,32 @@
  * SOFTWARE.
  */
 
-package it.pizzaroad.activity.splash
+package it.pizzaroad.databinding.spinner
 
-import android.content.Intent
-import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
-import it.pizzaroad.R
-import it.pizzaroad.activity.pizzeria.PizzeriaActivity
+import android.widget.Spinner
+import androidx.databinding.BindingAdapter
+import androidx.databinding.InverseBindingAdapter
+import androidx.databinding.InverseBindingListener
+import it.pizzaroad.extensions.SpinnerExtensions.getSpinnerValue
+import it.pizzaroad.extensions.SpinnerExtensions.setSpinnerInverseBindingListener
+import it.pizzaroad.extensions.SpinnerExtensions.setSpinnerValue
 
-/**
- * @author fattazzo
- *         <p/>
- *         date: 28/02/20
- */
-class SplashActivity: AppCompatActivity(R.layout.splash) {
+object InverseSpinnerBindings {
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        Handler().postDelayed({
-            startActivity(Intent(this,PizzeriaActivity::class.java))
-            this.finish()
-        },500)
+    @JvmStatic
+    @BindingAdapter("selectedValue")
+    fun Spinner.setSelectedValue(selectedValue: Any?) {
+        setSpinnerValue(selectedValue)
     }
+    @JvmStatic
+    @BindingAdapter("selectedValueAttrChanged")
+    fun Spinner.setInverseBindingListener(inverseBindingListener: InverseBindingListener?) {
+        setSpinnerInverseBindingListener(inverseBindingListener)
+    }
+
+        @JvmStatic
+        @InverseBindingAdapter(attribute = "selectedValue", event = "selectedValueAttrChanged")
+        fun Spinner.getSelectedValue(): Any? {
+            return getSpinnerValue()
+        }
 }

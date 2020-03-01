@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Project: Pizza Road
   ~ File: content_pizzeria.xml
   ~
@@ -26,42 +25,87 @@
   ~ SOFTWARE.
   -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_margin="4dp"
-    android:background="@android:color/white"
-    android:orientation="vertical"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activity.pizzeria.PizzeriaActivity">
+    tools:showIn="@layout/activity_pizzeria">
 
-    <LinearLayout
-        android:id="@+id/constraintLayout3"
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="model"
+            type="it.pizzaroad.activity.pizzeria.PizzeriaActivityViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
+        android:layout_height="match_parent"
         android:layout_margin="4dp"
-        android:background="@drawable/border_line_round"
-        android:minHeight="0dp"
-        android:orientation="vertical"
-        app:layout_collapseMode="parallax">
+        android:background="@android:color/white">
 
-        <Spinner
-            android:id="@+id/localitaSpinner"
-            android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:clickable="true"
+            android:elevation="10dp"
+            android:focusable="true"
+            android:visibility="@{model.loadingData ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:id="@+id/animation_view"
+                android:layout_width="130dp"
+                android:layout_height="130dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                app:lottie_rawRes="@raw/loading_pizza" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <LinearLayout
+            android:id="@+id/constraintLayout3"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
             android:layout_margin="4dp"
-            android:focusable="false"
-            android:selectAllOnFocus="true" />
+            android:background="@drawable/border_line_round"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    </LinearLayout>
+            <Spinner
+                android:id="@+id/category_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:focusable="false"
+                android:selectAllOnFocus="true"
+                app:categoryEntries="@{model.categories}"
+                app:selectedValue="@={model.selectedCategory}" />
 
+        </LinearLayout>
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="TextView" />
-</LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/category_products_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layoutAnimation="@anim/layout_animation_from_bottom"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/constraintLayout3"
+            tools:listitem="@layout/list_item_product" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

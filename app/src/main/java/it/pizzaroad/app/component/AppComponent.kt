@@ -29,6 +29,7 @@ package it.pizzaroad.app.component
 
 import dagger.Component
 import it.pizzaroad.activity.pizzeria.PizzeriaActivity
+import it.pizzaroad.activity.product.ProductActivity
 import it.pizzaroad.app.module.AppModule
 import it.pizzaroad.app.module.ProductsModule
 import it.pizzaroad.app.module.viewmodel.ViewModelModule
@@ -44,4 +45,5 @@ import javax.inject.Singleton
 interface AppComponent {
 
     fun inject(activity: PizzeriaActivity)
+    fun inject(activity: ProductActivity)
 }

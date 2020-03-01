@@ -1,6 +1,6 @@
 /*
  * Project: Pizza Road
- * File: SplashActivity.kt
+ * File: DimensionsX.kt
  *
  * Created by fattazzo
  * Copyright © 2020 Gianluca Fattarsi. All rights reserved.
@@ -25,27 +25,16 @@
  * SOFTWARE.
  */
 
-package it.pizzaroad.activity.splash
+package it.pizzaroad.rest.api.models
 
-import android.content.Intent
-import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
-import it.pizzaroad.R
-import it.pizzaroad.activity.pizzeria.PizzeriaActivity
 
-/**
- * @author fattazzo
- *         <p/>
- *         date: 28/02/20
- */
-class SplashActivity: AppCompatActivity(R.layout.splash) {
+import com.google.gson.annotations.SerializedName
 
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        Handler().postDelayed({
-            startActivity(Intent(this,PizzeriaActivity::class.java))
-            this.finish()
-        },500)
-    }
-}
+data class DimensionsX(
+    @SerializedName("height")
+    val height: String,
+    @SerializedName("length")
+    val length: String,
+    @SerializedName("width")
+    val width: String
+)

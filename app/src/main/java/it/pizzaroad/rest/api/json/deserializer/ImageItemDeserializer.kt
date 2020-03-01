@@ -1,6 +1,6 @@
 /*
  * Project: Pizza Road
- * File: SplashActivity.kt
+ * File: ImageItemDeserializer.kt
  *
  * Created by fattazzo
  * Copyright © 2020 Gianluca Fattarsi. All rights reserved.
@@ -25,27 +25,35 @@
  * SOFTWARE.
  */
 
-package it.pizzaroad.activity.splash
+package it.pizzaroad.rest.api.json.deserializer
 
-import android.content.Intent
-import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
-import it.pizzaroad.R
-import it.pizzaroad.activity.pizzeria.PizzeriaActivity
+import com.google.gson.Gson
+import com.google.gson.JsonDeserializationContext
+import com.google.gson.JsonDeserializer
+import com.google.gson.JsonElement
+import it.pizzaroad.rest.api.models.Image
+import java.lang.reflect.Type
 
 /**
- * @author fattazzo
- *         <p/>
- *         date: 28/02/20
+ * Custom json deserializer.
+ *
+ * Image property ( es. for [it.pizzaroad.rest.api.models.Category] ) can be a JSONObject or JSONArray. Deserializer parse the value
+ * and return a collection of Image.
+ *
+ * @return List of [Image]
  */
-class SplashActivity: AppCompatActivity(R.layout.splash) {
-
-    override fun onAttachedToWindow() {
-        super.onAttachedToWindow()
-
-        Handler().postDelayed({
-            startActivity(Intent(this,PizzeriaActivity::class.java))
-            this.finish()
-        },500)
+class ImageItemDeserializer : JsonDeserializer<List<Image>> {
+    override fun deserialize(
+        json: JsonElement,
+        type: Type,
+        context: JsonDeserializationContext?
+    ): List<Image> {
+        with(json) {
+            return if (isJsonObject) {
+                arrayListOf(Gson().fromJson(this, Image::class.java))
+            } else {
+                Gson().fromJson(this, Array<Image>::class.java).toList()
+            }
+        }
     }
 }

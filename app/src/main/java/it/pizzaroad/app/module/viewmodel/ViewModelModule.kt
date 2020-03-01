@@ -33,6 +33,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 import it.pizzaroad.activity.pizzeria.PizzeriaActivityViewModel
+import it.pizzaroad.activity.product.ProductViewModel
 
 @Module
 internal abstract class ViewModelModule {
@@ -44,4 +45,9 @@ internal abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(PizzeriaActivityViewModel::class)
     internal abstract fun providePizzeriaActivityViewModel(viewModel: PizzeriaActivityViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProductViewModel::class)
+    internal abstract fun provideProductViewModel(viewModel: ProductViewModel): ViewModel
 }

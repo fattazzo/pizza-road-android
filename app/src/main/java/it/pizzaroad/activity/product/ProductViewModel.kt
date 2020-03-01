@@ -1,6 +1,6 @@
 /*
  * Project: Pizza Road
- * File: ProductsManager.kt
+ * File: ProductViewModel.kt
  *
  * Created by fattazzo
  * Copyright © 2020 Gianluca Fattarsi. All rights reserved.
@@ -25,31 +25,55 @@
  * SOFTWARE.
  */
 
-package it.pizzaroad.rest.manager.impl
+package it.pizzaroad.activity.product
 
-import android.content.Context
-import it.pizzaroad.rest.api.RetrofitBuilder
+import androidx.databinding.ObservableBoolean
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import it.pizzaroad.extensions.ioJob
 import it.pizzaroad.rest.api.models.Product
-import it.pizzaroad.rest.api.services.products.ProductsRestService
-import it.pizzaroad.rest.manager.AbstractRestManager
-import it.pizzaroad.rest.manager.Result
+import it.pizzaroad.rest.manager.impl.ProductsManager
+import java.math.BigDecimal
+import javax.inject.Inject
 
 /**
  * @author fattazzo
  *         <p/>
- *         date: 28/02/20
+ *         date: 01/03/20
  */
-class ProductsManager(context: Context) : AbstractRestManager(context) {
+class ProductViewModel @Inject constructor(private val productsManager: ProductsManager) :
+    ViewModel() {
 
-    private val productsRestService = RetrofitBuilder.client.create(ProductsRestService::class.java)
+    val product = MutableLiveData<Product>(Product())
 
-    fun list(itemsPerPage: Int = 10, categoryId: String?): Result<List<Product>> {
-        val response = productsRestService.list(itemsPerPage, categoryId)
-        return processResponseWithResult(response)
+    val prezzo = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
+    val quantita = MutableLiveData<Int>(1)
+
+    val loading = ObservableBoolean(false)
+
+    fun loadProduct(productId: Int) {
+
+        if (product.value?.id == productId) {
+            return
+        }
+
+        loading.set(true)
+        ioJob {
+            try {
+                product.postValue(productsManager.get(productId))
+            } finally {
+                loading.set(false)
+            }
+        }
     }
 
-    fun get(productId: Int): Product? {
-        val response = productsRestService.get(productId)
-        return processResponse(response)
+    fun increaseQuantita() {
+        quantita.postValue((quantita.value ?: 0) + 1)
+    }
+
+    fun decreaseQuantita() {
+        if ((quantita.value ?: 0) > 0) {
+            quantita.postValue((quantita.value ?: 0) - 1)
+        }
     }
 }
