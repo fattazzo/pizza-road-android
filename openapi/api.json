@@ -1,0 +1,3369 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "title": "PizzaShop",
+        "version": "1.0.0",
+        "description": "<h1>REST API for managing a pizzeria.</h1>\n<br>\n\nThe application includes the management of:\n\n<ul>\n    <li>users (workers and customers)</li>\n    <li>company branches</li>\n    <li>products (variations like doughs, dimensions and toppings, categories)</li>\n    <li>orders (creation, management)</li>\n<ul>",
+        "contact": {
+            "name": "Fattarsi Gianluca",
+            "url": "https://gianlucafattarsi.github.io/",
+            "email": "gianluca.fattarsi@gmail.com"
+        },
+        "license": {
+            "name": "MIT License",
+            "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "servers": [
+        {
+            "url": "https://virtserver.swaggerhub.com/fattazzo/pizza-shop/1.0.0",
+            "description": ""
+        }
+    ],
+    "paths": {
+        "/company": {
+            "summary": "Path used to manage a single Company.",
+            "description": "The REST endpoint/path used to get and update single instances of an `Company`.  This path contains `GET`, and `PUT` operations used to perform the get and update tasks, respectively.",
+            "get": {
+                "tags": [
+                    "companies"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Company"
+                                },
+                                "examples": {
+                                    "example1": {
+                                        "value": {
+                                            "id": 1,
+                                            "name": "Company 1",
+                                            "webUrl": "www.company1.com"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns a single `Company`."
+                    }
+                },
+                "operationId": "getCompany",
+                "summary": "Get a Company",
+                "description": "Gets the details of a single instance of a `Company`."
+            },
+            "put": {
+                "requestBody": {
+                    "description": "Updated `Company` information.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Company"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "companies"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Company"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "updateCompany",
+                "summary": "Update a Company",
+                "description": "Updates an existing `Company`."
+            }
+        },
+        "/branches": {
+            "summary": "Path used to manage the list of branches.",
+            "description": "The REST endpoint/path used to list and create zero or more `Branch` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "tags": [
+                    "branches"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Branch"
+                                    }
+                                },
+                                "examples": {
+                                    "example1": {
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "phone": "some text",
+                                                "webUrl": "some text",
+                                                "enabled": true,
+                                                "primary": true,
+                                                "address": {
+                                                    "streetAddress": "via test",
+                                                    "number": "1",
+                                                    "place": "Trento",
+                                                    "postalCode": "38121"
+                                                }
+                                            },
+                                            {
+                                                "id": 2,
+                                                "phone": "some text",
+                                                "webUrl": "some text",
+                                                "enabled": true,
+                                                "primary": true,
+                                                "address": {
+                                                    "streetAddress": "via prova",
+                                                    "number": "1",
+                                                    "place": "Baselga di Pinè",
+                                                    "postalCode": "38042"
+                                                }
+                                            },
+                                            {
+                                                "id": 3,
+                                                "phone": "some text",
+                                                "webUrl": "some text",
+                                                "enabled": true,
+                                                "primary": true,
+                                                "address": {
+                                                    "streetAddress": "via Rossi",
+                                                    "number": "10/A",
+                                                    "place": "Milano",
+                                                    "postalCode": "11111"
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `Branch` entities."
+                    }
+                },
+                "operationId": "getBranches",
+                "summary": "List All branches of company",
+                "description": "Gets a list of all `Branch` entities."
+            },
+            "post": {
+                "requestBody": {
+                    "description": "A new `Branch` to be created.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BranchDetails"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "branches"
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BranchDetails"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    },
+                    "409": {
+                        "description": "Fail primary check on `Branch`. Only one primary branch is permitted."
+                    }
+                },
+                "operationId": "createBranch",
+                "summary": "Create a Branch for company",
+                "description": "Creates a new instance of a `Branch`."
+            }
+        },
+        "/branches/{branchId}": {
+            "summary": "Path used to manage a single Branch.",
+            "description": "The REST endpoint/path used to get, update, and delete single instances of an `Branch`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+            "get": {
+                "tags": [
+                    "branches"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BranchDetails"
+                                },
+                                "examples": {
+                                    "example1": {
+                                        "value": {
+                                            "id": 1,
+                                            "phone": "some text",
+                                            "webUrl": "some text",
+                                            "shippingMethods": [
+                                                {
+                                                    "id": 17,
+                                                    "title": "some text",
+                                                    "description": "some text"
+                                                },
+                                                {
+                                                    "id": 89,
+                                                    "title": "some text",
+                                                    "description": "some text"
+                                                }
+                                            ],
+                                            "shippingZones": [
+                                                {
+                                                    "id": 29,
+                                                    "name": "some text"
+                                                },
+                                                {
+                                                    "id": 75,
+                                                    "name": "some text"
+                                                }
+                                            ],
+                                            "primary": true,
+                                            "enabled": true,
+                                            "address": {
+                                                "streetAddress": "via test",
+                                                "number": "1",
+                                                "place": "Trento",
+                                                "postalCode": "38121"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns a single `Branch`."
+                    }
+                },
+                "operationId": "getBranch",
+                "summary": "Get a Branch",
+                "description": "Gets the details of a single instance of a `Branch`."
+            },
+            "put": {
+                "requestBody": {
+                    "description": "Updated `Branch` information.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/BranchDetails"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "branches"
+                ],
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/BranchDetails"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    },
+                    "409": {
+                        "description": "Fail primary check on `Branch`. Only one primary branch is permitted."
+                    }
+                },
+                "operationId": "updateBranch",
+                "summary": "Update a Branch",
+                "description": "Updates an existing `Branch`."
+            },
+            "delete": {
+                "tags": [
+                    "branches"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "deleteBranch",
+                "summary": "Delete a Branch",
+                "description": "Deletes an existing `Branch`."
+            },
+            "parameters": [
+                {
+                    "name": "branchId",
+                    "description": "A unique identifier for a `Branch`.",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/branches/{branchId}/shippingzones": {
+            "summary": "Path used to manage the list of shippingzones.",
+            "description": "The REST endpoint/path used to list and create zero or more `ShippingZone` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "tags": [
+                    "branches"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ShippingZone"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `ShippingZone` entities."
+                    }
+                },
+                "operationId": "getShippingZones",
+                "summary": "List All shippingzones",
+                "description": "Gets a list of all `ShippingZone` entities."
+            },
+            "parameters": [
+                {
+                    "name": "branchId",
+                    "description": "A unique identifier for a `Branch`.",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/groups": {
+            "summary": "Path used to manage the list of groups.",
+            "description": "The REST endpoint/path used to list and create zero or more `Group` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "tags": [
+                    "groups"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Group"
+                                    }
+                                },
+                                "examples": {
+                                    "example1": {
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "name": "Admin",
+                                                "roles": [
+                                                    "SECURITY_VIEW",
+                                                    "SECURITY_EDIT",
+                                                    "WEB_ACCESS"
+                                                ]
+                                            },
+                                            {
+                                                "id": 13,
+                                                "name": "some text",
+                                                "roles": [
+                                                    "SECURITY_VIEW",
+                                                    "WEB_ACCESS"
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `Group` entities."
+                    }
+                },
+                "operationId": "getGroups",
+                "summary": "List All groups",
+                "description": "Gets a list of all `Group` entities."
+            },
+            "post": {
+                "requestBody": {
+                    "description": "A new `Group` to be created.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Group"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "groups"
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Group"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "createGroup",
+                "summary": "Create a Group",
+                "description": "Creates a new instance of a `Group`."
+            }
+        },
+        "/groups/{groupId}": {
+            "summary": "Path used to manage a single Group.",
+            "description": "The REST endpoint/path used to get, update, and delete single instances of an `Group`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+            "get": {
+                "tags": [
+                    "groups"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Group"
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns a single `Group`."
+                    }
+                },
+                "operationId": "getGroup",
+                "summary": "Get a Group",
+                "description": "Gets the details of a single instance of a `Group`."
+            },
+            "put": {
+                "requestBody": {
+                    "description": "Updated `Group` information.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Group"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "groups"
+                ],
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Group"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "updateGroup",
+                "summary": "Update a Group",
+                "description": "Updates an existing `Group`."
+            },
+            "delete": {
+                "tags": [
+                    "groups"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "deleteGroup",
+                "summary": "Delete a Group",
+                "description": "Deletes an existing `Group`."
+            },
+            "parameters": [
+                {
+                    "name": "groupId",
+                    "description": "A unique identifier for a `Company`.",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/shippingmethods": {
+            "summary": "Path used to manage the list of shippingmethods.",
+            "description": "The REST endpoint/path used to list and create zero or more `ShippingMethod` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "tags": [
+                    "shippingmethods"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ShippingMethod"
+                                    }
+                                },
+                                "examples": {
+                                    "example1": {
+                                        "value": [
+                                            {
+                                                "id": 1,
+                                                "title": "Cash on delivery",
+                                                "description": "Paying for goods when they are delivered.",
+                                                "type": "CASH_ON_DELIVERY",
+                                                "enabled": true
+                                            },
+                                            {
+                                                "id": 2,
+                                                "title": "Air mail",
+                                                "description": "Fast and Furious!",
+                                                "type": "CASH_ON_DELIVERY",
+                                                "enabled": true
+                                            },
+                                            {
+                                                "id": 3,
+                                                "title": "PayPal",
+                                                "description": "PayPal transaction",
+                                                "type": "PAY_PAL",
+                                                "enabled": true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `ShippingMethod` entities."
+                    }
+                },
+                "operationId": "getShippingMethods",
+                "summary": "List All shippingmethods",
+                "description": "Gets a list of all `ShippingMethod` entities."
+            },
+            "post": {
+                "requestBody": {
+                    "description": "A new `ShippingMethod` to be created.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShippingMethod"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "shippingmethods"
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShippingMethod"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "createShippingMethod",
+                "summary": "Create a ShippingMethod",
+                "description": "Creates a new instance of a `ShippingMethod`."
+            }
+        },
+        "/shippingmethods/{shippingmethodId}": {
+            "summary": "Path used to manage a single ShippingMethod.",
+            "description": "The REST endpoint/path used to get, update, and delete single instances of an `ShippingMethod`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+            "get": {
+                "tags": [
+                    "shippingmethods"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShippingMethod"
+                                },
+                                "examples": {
+                                    "example1": {
+                                        "value": {
+                                            "id": 3,
+                                            "title": "PayPal",
+                                            "description": "PayPal transaction",
+                                            "type": "PAY_PAL",
+                                            "enabled": true
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns a single `ShippingMethod`."
+                    }
+                },
+                "operationId": "getShippingMethod",
+                "summary": "Get a ShippingMethod",
+                "description": "Gets the details of a single instance of a `ShippingMethod`."
+            },
+            "put": {
+                "requestBody": {
+                    "description": "Updated `ShippingMethod` information.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ShippingMethod"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "shippingmethods"
+                ],
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ShippingMethod"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "updateShippingMethod",
+                "summary": "Update a ShippingMethod",
+                "description": "Updates an existing `ShippingMethod`."
+            },
+            "delete": {
+                "tags": [
+                    "shippingmethods"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "deleteShippingMethod",
+                "summary": "Delete a ShippingMethod",
+                "description": "Deletes an existing `ShippingMethod`."
+            },
+            "parameters": [
+                {
+                    "name": "shippingmethodId",
+                    "description": "A unique identifier for a `ShippingMethod`.",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/users": {
+            "summary": "Path used to manage the list of users.",
+            "description": "The REST endpoint/path used to list and create zero or more `User` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/User"
+                                    }
+                                },
+                                "examples": {
+                                    "example1": {
+                                        "value": [
+                                            {
+                                                "id": 21,
+                                                "username": "some text",
+                                                "password": "**********",
+                                                "email": "some text",
+                                                "firstName": "some text",
+                                                "lastName": "some text",
+                                                "deliveryAddresses": [
+                                                    {
+                                                        "id": 79,
+                                                        "address": {
+                                                            "streetAddress": "some text",
+                                                            "number": "some text",
+                                                            "place": "some text",
+                                                            "postalCode": "some text"
+                                                        },
+                                                        "shippingMethod": {
+                                                            "id": 90,
+                                                            "title": "some text",
+                                                            "description": "some text"
+                                                        }
+                                                    },
+                                                    {
+                                                        "id": 82,
+                                                        "address": {
+                                                            "streetAddress": "some text",
+                                                            "number": "some text",
+                                                            "place": "some text",
+                                                            "postalCode": "some text"
+                                                        },
+                                                        "shippingMethod": {
+                                                            "id": 3,
+                                                            "title": "some text",
+                                                            "description": "some text"
+                                                        }
+                                                    }
+                                                ],
+                                                "groups": [
+                                                    {
+                                                        "id": 60,
+                                                        "name": "some text",
+                                                        "roles": [
+                                                            "WEB_ACCESS",
+                                                            "SECURITY_VIEW"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "id": 67,
+                                                        "name": "some text",
+                                                        "roles": [
+                                                            "WEB_ACCESS",
+                                                            "SECURITY_EDIT"
+                                                        ]
+                                                    }
+                                                ]
+                                            },
+                                            {
+                                                "id": 23,
+                                                "username": "some text",
+                                                "password": "**********",
+                                                "email": "some text",
+                                                "firstName": "some text",
+                                                "lastName": "some text",
+                                                "deliveryAddresses": [
+                                                    {
+                                                        "id": 77,
+                                                        "address": {
+                                                            "streetAddress": "some text",
+                                                            "number": "some text",
+                                                            "place": "some text",
+                                                            "postalCode": "some text"
+                                                        },
+                                                        "shippingMethod": {
+                                                            "id": 87,
+                                                            "title": "some text",
+                                                            "description": "some text"
+                                                        }
+                                                    },
+                                                    {
+                                                        "id": 72,
+                                                        "address": {
+                                                            "streetAddress": "some text",
+                                                            "number": "some text",
+                                                            "place": "some text",
+                                                            "postalCode": "some text"
+                                                        },
+                                                        "shippingMethod": {
+                                                            "id": 53,
+                                                            "title": "some text",
+                                                            "description": "some text"
+                                                        }
+                                                    }
+                                                ],
+                                                "groups": [
+                                                    {
+                                                        "id": 97,
+                                                        "name": "some text",
+                                                        "roles": [
+                                                            "WEB_ACCESS",
+                                                            "WEB_ACCESS"
+                                                        ]
+                                                    },
+                                                    {
+                                                        "id": 6,
+                                                        "name": "some text",
+                                                        "roles": [
+                                                            "SECURITY_VIEW",
+                                                            "SECURITY_VIEW"
+                                                        ]
+                                                    }
+                                                ]
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `User` entities."
+                    }
+                },
+                "operationId": "getUsers",
+                "summary": "List All users",
+                "description": "Gets a list of all `User` entities."
+            },
+            "post": {
+                "requestBody": {
+                    "description": "A new `User` to be created.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserDetails"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "users"
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDetails"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "createUser",
+                "summary": "Create a User",
+                "description": "Creates a new instance of a `User`. Only 'WORKER' type can be created"
+            }
+        },
+        "/users/{userName}": {
+            "summary": "Path used to manage a single User.",
+            "description": "The REST endpoint/path used to get, update, and delete single instances of an `User`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+            "get": {
+                "tags": [
+                    "users"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDetails"
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns a single `User`."
+                    }
+                },
+                "operationId": "getUser",
+                "summary": "Get a User",
+                "description": "Gets the details of a single instance of a `User`."
+            },
+            "put": {
+                "requestBody": {
+                    "description": "Updated `User` information.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserDetails"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "users"
+                ],
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UserDetails"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    },
+                    "400": {
+                        "description": "Username cannot change"
+                    }
+                },
+                "operationId": "updateUser",
+                "summary": "Update a User",
+                "description": "Updates an existing `User`."
+            },
+            "delete": {
+                "tags": [
+                    "users"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "deleteUser",
+                "summary": "Delete a User",
+                "description": "Deletes an existing `User`."
+            },
+            "parameters": [
+                {
+                    "name": "userName",
+                    "description": "A unique identifier for a `User`.",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/public/session": {
+            "summary": "Path used to manage the session operation",
+            "post": {
+                "requestBody": {
+                    "description": "Login user information",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserLogin"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "session"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Session"
+                                }
+                            }
+                        },
+                        "description": "Login successfull"
+                    }
+                },
+                "security": [
+                    {
+
+                    }
+                ],
+                "operationId": "login",
+                "summary": "Create a session",
+                "description": "Create a `Session` information"
+            }
+        },
+        "/public/session/refresh/{refreshToken}": {
+            "summary": "Path used to manage the session operation",
+            "post": {
+                "tags": [
+                    "session"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Session"
+                                }
+                            }
+                        },
+                        "description": "New session"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                },
+                                "examples": {
+                                    "example": {
+                                        "value": {
+                                            "error": {
+                                                "userTitle": "Refresh Token Expired or Invalid",
+                                                "userMessage": "Unable to refresh access token"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Response failed"
+                    }
+                },
+                "security": [
+                    {
+
+                    }
+                ],
+                "operationId": "refreshToken",
+                "summary": "Create new session",
+                "description": "Create new `Session` with a valid access token"
+            },
+            "parameters": [
+                {
+                    "name": "refreshToken",
+                    "description": "Refresh token used for retrieve new updated session information",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/variations/doughs/{doughId}": {
+            "summary": "Path used to manage a single Dough.",
+            "description": "The REST endpoint/path used to get, update, and delete single instances of an `Dough`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+            "get": {
+                "tags": [
+                    "variations"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VariationDough"
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns a single `Dough`."
+                    }
+                },
+                "operationId": "getDough",
+                "summary": "Get a Dough",
+                "description": "Gets the details of a single instance of a `Dough`."
+            },
+            "put": {
+                "requestBody": {
+                    "description": "Updated `Dough` information.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VariationDough"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "variations"
+                ],
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VariationDough"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "updateDough",
+                "summary": "Update a Dough",
+                "description": "Updates an existing `Dough`."
+            },
+            "delete": {
+                "tags": [
+                    "variations"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "deleteDough",
+                "summary": "Delete a Dough",
+                "description": "Deletes an existing `Dough`."
+            },
+            "parameters": [
+                {
+                    "name": "doughId",
+                    "description": "A unique identifier for a `Dough`.",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/variations/sizes/{sizeId}": {
+            "summary": "Path used to manage a single Size.",
+            "description": "The REST endpoint/path used to get, update, and delete single instances of an `Size`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+            "get": {
+                "tags": [
+                    "variations"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VariationSize"
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns a single `Size`."
+                    }
+                },
+                "operationId": "getSize",
+                "summary": "Get a Size",
+                "description": "Gets the details of a single instance of a `Size`."
+            },
+            "put": {
+                "requestBody": {
+                    "description": "Updated `Size` information.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VariationSize"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "variations"
+                ],
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VariationSize"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "updateSize",
+                "summary": "Update a Size",
+                "description": "Updates an existing `Size`."
+            },
+            "delete": {
+                "tags": [
+                    "variations"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "deleteSize",
+                "summary": "Delete a Size",
+                "description": "Deletes an existing `Size`."
+            },
+            "parameters": [
+                {
+                    "name": "sizeId",
+                    "description": "A unique identifier for a `Size`.",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/variations/toppings/{toppingId}": {
+            "summary": "Path used to manage a single Topping.",
+            "description": "The REST endpoint/path used to get, update, and delete single instances of an `Topping`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+            "get": {
+                "tags": [
+                    "variations"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Topping"
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns a single `Topping`."
+                    }
+                },
+                "operationId": "getTopping",
+                "summary": "Get a Topping",
+                "description": "Gets the details of a single instance of a `Topping`."
+            },
+            "put": {
+                "requestBody": {
+                    "description": "Updated `Topping` information.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Topping"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "variations"
+                ],
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Topping"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "updateTopping",
+                "summary": "Update a Topping",
+                "description": "Updates an existing `Topping`."
+            },
+            "delete": {
+                "tags": [
+                    "variations"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "deleteTopping",
+                "summary": "Delete a Topping",
+                "description": "Deletes an existing `Topping`."
+            },
+            "parameters": [
+                {
+                    "name": "toppingId",
+                    "description": "A unique identifier for a `Topping`.",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/company/logo": {
+            "summary": "Path used to manage a Company logo image.",
+            "description": "The REST endpoint/path used to get and update single instances of an `Company` logo.  This path contains `GET` and `PUT` operations used to perform the get and update tasks, respectively.\n\nCompany logo specification:\nType: PNG\nOptimal shape: square\nOptimal size: 320x320px",
+            "get": {
+                "tags": [
+                    "companies"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "image/png": {
+                                "schema": {
+                                    "format": "binary",
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": "Logo image"
+                    }
+                },
+                "security": [
+                    {
+
+                    }
+                ],
+                "operationId": "getLogo",
+                "summary": "Company logo",
+                "description": "Get a `Company` logo image"
+            },
+            "put": {
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "format": "binary",
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "companies"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "updateLogo",
+                "summary": "Update a Company logo",
+                "description": "Updates an existing `Company` logo."
+            }
+        },
+        "/settings/": {
+            "summary": "Path used to manage a single Settings.",
+            "description": "The REST endpoint/path used to get and update single instances of an `Settings`.  This path contains `GET`, and `PUT` operations used to perform the get and update tasks, respectively.",
+            "get": {
+                "tags": [
+                    "settings"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Settings"
+                                },
+                                "examples": {
+                                    "example1": {
+                                        "value": {
+                                            "id": 1,
+                                            "name": "Company 1",
+                                            "webUrl": "www.company1.com"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns a single `Settings`."
+                    }
+                },
+                "operationId": "getSettings",
+                "summary": "Get a Settings",
+                "description": "Gets the details of a single instance of a `Settings`."
+            },
+            "put": {
+                "requestBody": {
+                    "description": "Updated `Settings` information.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Settings"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "settings"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Settings"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "updateSettings",
+                "summary": "Update a Settings",
+                "description": "Updates an existing `Settings`."
+            }
+        },
+        "/productcategories": {
+            "summary": "Path used to manage the list of productcategories.",
+            "description": "The REST endpoint/path used to list and create zero or more `ProductCategory` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "tags": [
+                    "productcategories"
+                ],
+                "parameters": [
+                    {
+                        "name": "includeDisabled",
+                        "description": "If true, the list of all entities include enabled and disabled `ProductCategory`",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ProductCategory"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `ProductCategory` entities."
+                    }
+                },
+                "operationId": "getProductCategories",
+                "summary": "List All productcategories",
+                "description": "Gets a list of all `ProductCategory` entities."
+            },
+            "post": {
+                "requestBody": {
+                    "description": "A new `ProductCategory` to be created.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductCategoryDetails"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "productcategories"
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductCategoryDetails"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "createProductCategory",
+                "summary": "Create a ProductCategory",
+                "description": "Creates a new instance of a `ProductCategory`."
+            }
+        },
+        "/productcategories/{productcategoryId}": {
+            "summary": "Path used to manage a single ProductCategory.",
+            "description": "The REST endpoint/path used to get, update, and delete single instances of an `ProductCategory`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+            "get": {
+                "tags": [
+                    "productcategories"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductCategoryDetails"
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns a single `ProductCategory`."
+                    }
+                },
+                "operationId": "getProductCategory",
+                "summary": "Get a ProductCategory",
+                "description": "Gets the details of a single instance of a `ProductCategory`."
+            },
+            "put": {
+                "requestBody": {
+                    "description": "Updated `ProductCategory` information.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductCategoryDetails"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "productcategories"
+                ],
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductCategoryDetails"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "updateProductCategory",
+                "summary": "Update a ProductCategory",
+                "description": "Updates an existing `ProductCategory`."
+            },
+            "delete": {
+                "tags": [
+                    "productcategories"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "deleteProductCategory",
+                "summary": "Delete a ProductCategory",
+                "description": "Deletes an existing `ProductCategory`."
+            },
+            "parameters": [
+                {
+                    "name": "productcategoryId",
+                    "description": "A unique identifier for a `ProductCategory`.",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/variations/doughs": {
+            "summary": "Path used to manage the list of doughs.",
+            "description": "The REST endpoint/path used to list and create zero or more `Dough` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "tags": [
+                    "variations"
+                ],
+                "parameters": [
+                    {
+                        "name": "includeDisabled",
+                        "description": "If true, the list of all entities include enabled and disabled `Dough`",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/VariationDough"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `Dough` entities."
+                    }
+                },
+                "operationId": "getDoughs",
+                "summary": "List All doughs",
+                "description": "Gets a list of all `Dough` entities."
+            },
+            "post": {
+                "requestBody": {
+                    "description": "A new `Dough` to be created.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VariationDough"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "variations"
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VariationDough"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "createDough",
+                "summary": "Create a Dough",
+                "description": "Creates a new instance of a `Dough`."
+            }
+        },
+        "/variations/sizes": {
+            "summary": "Path used to manage the list of sizes.",
+            "description": "The REST endpoint/path used to list and create zero or more `Size` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "tags": [
+                    "variations"
+                ],
+                "parameters": [
+                    {
+                        "name": "includeDisabled",
+                        "description": "If true, the list of all entities include enabled and disabled `Size`",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/VariationSize"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `Size` entities."
+                    }
+                },
+                "operationId": "getSizes",
+                "summary": "List All sizes",
+                "description": "Gets a list of all `Size` entities."
+            },
+            "post": {
+                "requestBody": {
+                    "description": "A new `Size` to be created.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/VariationSize"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "variations"
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/VariationSize"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "createSize",
+                "summary": "Create a Size",
+                "description": "Creates a new instance of a `Size`."
+            }
+        },
+        "/variations/toppings": {
+            "summary": "Path used to manage the list of toppings.",
+            "description": "The REST endpoint/path used to list and create zero or more `Topping` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "tags": [
+                    "variations"
+                ],
+                "parameters": [
+                    {
+                        "name": "includeDisabled",
+                        "description": "If true, the list of all entities include enabled and disabled `Topping`",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "in": "query"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Topping"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `Topping` entities."
+                    }
+                },
+                "operationId": "getToppings",
+                "summary": "List All toppings",
+                "description": "Gets a list of all `Topping` entities."
+            },
+            "post": {
+                "requestBody": {
+                    "description": "A new `Topping` to be created.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Topping"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "variations"
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Topping"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "createTopping",
+                "summary": "Create a Topping",
+                "description": "Creates a new instance of a `Topping`."
+            }
+        },
+        "/products": {
+            "summary": "Path used to manage the list of products.",
+            "description": "The REST endpoint/path used to list and create zero or more `Product` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "tags": [
+                    "products"
+                ],
+                "parameters": [
+                    {
+                        "name": "includeDisabled",
+                        "description": "If true, the list of all entities include enabled and disabled `Product`",
+                        "schema": {
+                            "type": "boolean"
+                        },
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Product"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `Product` entities."
+                    }
+                },
+                "operationId": "getProducts",
+                "summary": "List All products",
+                "description": "Gets a list of all `Product` entities."
+            },
+            "post": {
+                "requestBody": {
+                    "description": "A new `Product` to be created.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductDetails"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "products"
+                ],
+                "responses": {
+                    "201": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductDetails"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "createProduct",
+                "summary": "Create a Product",
+                "description": "Creates a new instance of a `Product`."
+            }
+        },
+        "/products/{productId}": {
+            "summary": "Path used to manage a single Product.",
+            "description": "The REST endpoint/path used to get, update, and delete single instances of an `Product`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+            "get": {
+                "tags": [
+                    "products"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductDetails"
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns a single `Product`."
+                    }
+                },
+                "operationId": "getProduct",
+                "summary": "Get a Product",
+                "description": "Gets the details of a single instance of a `Product`."
+            },
+            "put": {
+                "requestBody": {
+                    "description": "Updated `Product` information.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ProductDetails"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "products"
+                ],
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProductDetails"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "updateProduct",
+                "summary": "Update a Product",
+                "description": "Updates an existing `Product`."
+            },
+            "delete": {
+                "tags": [
+                    "products"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "deleteProduct",
+                "summary": "Delete a Product",
+                "description": "Deletes an existing `Product`."
+            },
+            "parameters": [
+                {
+                    "name": "productId",
+                    "description": "A unique identifier for a `Product`.",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/toppingextras": {
+            "summary": "Path used to manage the list of toppingextras.",
+            "description": "The REST endpoint/path used to list and create zero or more `ToppingExtra` entities.  This path contains a `GET` and `POST` operation to perform the list and create tasks, respectively.",
+            "get": {
+                "tags": [
+                    "toppingextras"
+                ],
+                "parameters": [
+                    {
+                        "name": "doughId",
+                        "description": "Work with `sizeId` parameter",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "in": "header"
+                    },
+                    {
+                        "name": "sizeId",
+                        "description": "Work with `doughId` parameter",
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ToppingExtra"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns an array of `ToppingExtra` entities."
+                    }
+                },
+                "operationId": "getToppingExtras",
+                "summary": "List All ToppingExtras",
+                "description": "Gets a list of all `ToppingExtra` entities."
+            },
+            "put": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/ToppingExtra"
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "toppingextras"
+                ],
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ToppingExtra"
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "updateToppingExtras",
+                "summary": "Update All ToppingExtras",
+                "description": "Updates existing `ToppingExtra`."
+            }
+        },
+        "/toppingextras/{toppingextraId}": {
+            "summary": "Path used to manage a single ToppingExtra.",
+            "description": "The REST endpoint/path used to get, update, and delete single instances of an `ToppingExtra`.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+            "get": {
+                "tags": [
+                    "toppingextras"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ToppingExtra"
+                                }
+                            }
+                        },
+                        "description": "Successful response - returns a single `ToppingExtra`."
+                    }
+                },
+                "operationId": "getToppingExtra",
+                "summary": "Get a ToppingExtra",
+                "description": "Gets the details of a single instance of a `ToppingExtra`."
+            },
+            "put": {
+                "requestBody": {
+                    "description": "Updated `ToppingExtra` information.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ToppingExtra"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "toppingextras"
+                ],
+                "responses": {
+                    "202": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ToppingExtra"
+                                }
+                            }
+                        },
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "updateToppingExtra",
+                "summary": "Update a ToppingExtra",
+                "description": "Updates an existing `ToppingExtra`."
+            },
+            "parameters": [
+                {
+                    "name": "toppingextraId",
+                    "description": "A unique identifier for a `ToppingExtra`.",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/products/{productId}/image": {
+            "summary": "Path used to manage a Product image.",
+            "description": "The REST endpoint/path used to get, update, and delete single instances of an `Product` image.  This path contains `GET`, `PUT`, and `DELETE` operations used to perform the get, update, and delete tasks, respectively.",
+            "get": {
+                "tags": [
+                    "products"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "image/png": {
+                                "schema": {
+                                    "format": "binary",
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": "`Product` image"
+                    },
+                    "204": {
+                        "description": "`Product` image not present"
+                    }
+                },
+                "security": [
+                    {
+
+                    }
+                ],
+                "operationId": "getProductImage",
+                "summary": "Get a Product image",
+                "description": "Gets a `Product` image."
+            },
+            "put": {
+                "requestBody": {
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "file": {
+                                        "format": "binary",
+                                        "type": "string"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "products"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response"
+                    }
+                },
+                "operationId": "updateProductImage",
+                "summary": "Update a Product image",
+                "description": "Updates an existing `Product` image."
+            },
+            "delete": {
+                "tags": [
+                    "products"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response."
+                    }
+                },
+                "operationId": "deleteProductImage",
+                "summary": "Delete a Product image",
+                "description": "Deletes an existing `Product` image."
+            },
+            "parameters": [
+                {
+                    "name": "productId",
+                    "description": "A unique identifier for a `Product`.",
+                    "schema": {
+                        "type": "integer"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/dashboard": {
+            "summary": "Path used to manage the dashboard.",
+            "description": "The REST endpoint/path used to get the `Dashboard` entity.  This path contains a `GET` operation to perform the get task.",
+            "get": {
+                "tags": [
+                    "dashboard"
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Dashboard"
+                                }
+                            }
+                        },
+                        "description": "Successful response - return the `Dashboard` entity."
+                    }
+                },
+                "operationId": "getDashboard",
+                "summary": "Get a Dashboard",
+                "description": "Gets a `Dashboard`."
+            }
+        },
+        "/public/confirm-registration/{username}": {
+            "summary": "Confirm user registration",
+            "description": "Confirm user registration with token and change status to 'Active'.",
+            "post": {
+                "tags": [
+                    "registration"
+                ],
+                "parameters": [
+                    {
+                        "name": "registrationToken",
+                        "description": "Valid token required to confirm registration",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "content": {
+                            "text/xml": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "description": "Successful response"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                },
+                                "examples": {
+                                    "example": {
+                                        "value": {
+                                            "error": {
+                                                "userTitle": "User confirmation error",
+                                                "userMessage": "Registration token required"
+                                            }
+                                        }
+                                    },
+                                    "example2": {
+                                        "value": {
+                                            "error": {
+                                                "userTitle": "User confirmation error",
+                                                "userMessage": "Activation link expired or already used: request a new activation link"
+                                            }
+                                        }
+                                    },
+                                    "example3": {
+                                        "value": {
+                                            "error": {
+                                                "userTitle": "User confirmation error",
+                                                "userMessage": "Activation token not valid"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Confirm registration failed"
+                    }
+                },
+                "security": [
+                    {
+
+                    }
+                ],
+                "operationId": "confirmRegistration",
+                "summary": "Perform a confirm for a User registration",
+                "description": "Complete `User` registration and change status to 'Active'"
+            },
+            "parameters": [
+                {
+                    "name": "username",
+                    "description": "Username of `User` entity",
+                    "schema": {
+                        "type": "string"
+                    },
+                    "in": "path",
+                    "required": true
+                }
+            ]
+        },
+        "/public/registration-customer": {
+            "summary": "Customer User registration",
+            "description": "The REST endpoint/path used to create zero or more `User` entities. This path contains a `POST` operation to perform the create tasks.",
+            "post": {
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UserRegistrationInfo"
+                            },
+                            "examples": {
+                                "example": {
+                                    "value": {
+                                        "username": "username",
+                                        "password": "password",
+                                        "firstname": "Name",
+                                        "lastname": "Last name",
+                                        "email": "username@email.com"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "tags": [
+                    "registration"
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                },
+                                "examples": {
+                                    "example": {
+                                        "value": {
+                                            "error": {
+                                                "userTitle": "User creation failed",
+                                                "userMessage": "User already exist"
+                                            }
+                                        }
+                                    },
+                                    "example2": {
+                                        "value": {
+                                            "error": {
+                                                "userTitle": "User creation failed",
+                                                "userMessage": "Error sending activation email"
+                                            }
+                                        }
+                                    },
+                                    "example3": {
+                                        "value": {
+                                            "error": {
+                                                "userTitle": "User creation failed",
+                                                "userMessage": "Email already used by another user"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Request failed"
+                    }
+                },
+                "security": [
+                    {
+
+                    }
+                ],
+                "operationId": "createCustomer",
+                "summary": "Create a customer User",
+                "description": "Create a new instance of `User` with type 'CUSTOMER' and status \"TO_CONFIRM\""
+            }
+        },
+        "/public/resend-confirm-registration-mail": {
+            "summary": "Resend email with activation code",
+            "description": "The REST endpoint/path used to resend email with activation code to user. This path contains a `POST` operation to perform the tasks.",
+            "post": {
+                "tags": [
+                    "registration"
+                ],
+                "parameters": [
+                    {
+                        "name": "username",
+                        "description": "username of `User`",
+                        "schema": {
+                            "type": "string"
+                        },
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Successful response"
+                    },
+                    "400": {
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ErrorResponse"
+                                },
+                                "examples": {
+                                    "example": {
+                                        "value": {
+                                            "error": {
+                                                "userTitle": "Resend activation mail error",
+                                                "userMessage": "The user is already active"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "description": "Request failed"
+                    }
+                },
+                "security": [
+                    {
+
+                    }
+                ],
+                "operationId": "resendConfirmRegistrationMail",
+                "summary": "Resend email",
+                "description": "Resend email with activation code to user"
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Company": {
+                "description": "",
+                "required": [
+                    "name"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Company name",
+                        "type": "string"
+                    },
+                    "webUrl": {
+                        "description": "Company web url",
+                        "type": "string"
+                    },
+                    "logoUrl": {
+                        "description": "Url of `Company` logo",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "id": 1,
+                    "name": "PizzaShop",
+                    "webUrl": "wwww.pizzashop.example",
+                    "enabled": true
+                }
+            },
+            "ShippingMethod": {
+                "title": "Root Type for ShippingMethod",
+                "description": "",
+                "required": [
+                    "title",
+                    "type",
+                    "enabled"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Method ID",
+                        "type": "integer"
+                    },
+                    "title": {
+                        "description": "Shipping method title",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "Shipping method description",
+                        "type": "string"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/ShippingMethodType",
+                        "description": ""
+                    },
+                    "enabled": {
+                        "description": "",
+                        "type": "boolean"
+                    }
+                },
+                "example": {
+                    "id": 1,
+                    "title": "Cash on delivery",
+                    "description": "Paying for goods when they are delivered.",
+                    "type": "CASH_ON_DELIVERY",
+                    "enabled": true
+                }
+            },
+            "ShippingZone": {
+                "title": "Root Type for ShippingZone",
+                "description": "",
+                "required": [
+                    "name"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier for the resource",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "Shipping zone name",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "id": 0,
+                    "name": "Zone 1"
+                }
+            },
+            "Address": {
+                "description": "",
+                "required": [
+                    "streetAddress",
+                    "place"
+                ],
+                "type": "object",
+                "properties": {
+                    "streetAddress": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "number": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "place": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "postalCode": {
+                        "description": "",
+                        "type": "string"
+                    }
+                },
+                "example": {
+                    "streetAddress": "via test",
+                    "number": "1A",
+                    "place": "Trento",
+                    "postalCode": "38121"
+                }
+            },
+            "DeliveryAddress": {
+                "description": "",
+                "required": [
+                    "streetAddress"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "integer"
+                    },
+                    "address": {
+                        "$ref": "#/components/schemas/Address",
+                        "description": ""
+                    },
+                    "shippingMethod": {
+                        "$ref": "#/components/schemas/ShippingMethod",
+                        "description": ""
+                    }
+                },
+                "example": {
+                    "id": 1,
+                    "address": {
+                        "streetAddress": "via test",
+                        "number": "1A",
+                        "place": "Trento",
+                        "postalCode": "38121"
+                    },
+                    "shippingMethod": {
+                        "id": 56,
+                        "title": "some text",
+                        "description": "some text"
+                    }
+                }
+            },
+            "Group": {
+                "description": "",
+                "required": [
+                    "name",
+                    "readOnly"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "roles": {
+                        "description": "List of assigned `Role'",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Role"
+                        }
+                    },
+                    "readOnly": {
+                        "description": "Read only groups cannot be deleted",
+                        "type": "boolean"
+                    }
+                },
+                "example": {
+                    "id": 1,
+                    "name": "Admin",
+                    "readOnly": true,
+                    "roles": [
+                        "WEB_ACCESS",
+                        "SECURITY_EDIT",
+                        "SECURITY_VIEW"
+                    ]
+                }
+            },
+            "Role": {
+                "description": "",
+                "enum": [
+                    "WEB_ADMIN",
+                    "SECURITY",
+                    "SHIPPING_METHODS",
+                    "COMPANY",
+                    "EDIT_ACCOUNT",
+                    "VARIATIONS",
+                    "PRODUCTS"
+                ],
+                "type": "string"
+            },
+            "Branch": {
+                "description": "",
+                "required": [
+                    "shippingMethods",
+                    "primary",
+                    "address",
+                    "enabled"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier",
+                        "type": "integer"
+                    },
+                    "phone": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "webUrl": {
+                        "description": "Web site url",
+                        "type": "string"
+                    },
+                    "primary": {
+                        "description": "",
+                        "type": "boolean"
+                    },
+                    "address": {
+                        "$ref": "#/components/schemas/Address",
+                        "description": ""
+                    },
+                    "enabled": {
+                        "description": "",
+                        "type": "boolean"
+                    }
+                },
+                "example": {
+                    "id": 1,
+                    "phone": "XXX XXXXXXX",
+                    "webUrl": "www.pizzashop.example/branch1",
+                    "primary": true,
+                    "enabled": true,
+                    "address": {
+                        "streetAddress": "some text",
+                        "number": "some text",
+                        "place": "some text",
+                        "postalCode": "some text"
+                    }
+                }
+            },
+            "BranchDetails": {
+                "description": "",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Branch"
+                    },
+                    {
+                        "required": [
+                            "shippingMethods"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "shippingMethods": {
+                                "description": "List of available `ShippingMethod`",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/ShippingMethod"
+                                }
+                            },
+                            "shippingZones": {
+                                "description": "List of available `ShippingZone`",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/ShippingZone"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "example": {
+                    "id": 1,
+                    "phone": "XXX XXXXXXX",
+                    "webUrl": "www.pizzashop.example/branch1",
+                    "shippingMethods": [
+                        {
+                            "id": "flat_rate",
+                            "title": "Flat rate",
+                            "description": "Lets you charge a fixed rate for shipping."
+                        }
+                    ],
+                    "shippingZones": [
+                        {
+                            "id": 0,
+                            "name": "Zone 1"
+                        },
+                        {
+                            "id": 0,
+                            "name": "Zone 2"
+                        }
+                    ],
+                    "primary": true
+                }
+            },
+            "ShippingMethodType": {
+                "description": "",
+                "enum": [
+                    "PAY_PAL",
+                    "CASH_ON_DELIVERY"
+                ],
+                "type": "string"
+            },
+            "User": {
+                "description": "",
+                "required": [
+                    "username",
+                    "password",
+                    "readOnly",
+                    "type",
+                    "status"
+                ],
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "description": "Login name",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "The email address",
+                        "type": "string"
+                    },
+                    "readOnly": {
+                        "description": "Read only users cannot be deleted",
+                        "type": "boolean"
+                    },
+                    "type": {
+                        "$ref": "#/components/schemas/UserType",
+                        "description": "Type of user"
+                    },
+                    "status": {
+                        "$ref": "#/components/schemas/UserStatus",
+                        "description": "Status of the `User`"
+                    }
+                },
+                "example": {
+                    "username": "some text",
+                    "email": "some text",
+                    "readOnly": true,
+                    "type": "WORKER"
+                }
+            },
+            "UserDetails": {
+                "description": "",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/User"
+                    },
+                    {
+                        "required": [
+                            "groups"
+                        ],
+                        "type": "object",
+                        "properties": {
+                            "password": {
+                                "format": "password",
+                                "description": "Login password",
+                                "type": "string"
+                            },
+                            "firstName": {
+                                "description": "First name",
+                                "type": "string"
+                            },
+                            "lastName": {
+                                "description": "Last name",
+                                "type": "string"
+                            },
+                            "groups": {
+                                "description": "List of assigned `Group`",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/Group"
+                                }
+                            },
+                            "deliveryAddresses": {
+                                "description": "List of delivery address",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/DeliveryAddress"
+                                }
+                            }
+                        }
+                    }
+                ],
+                "example": {
+                    "username": "some text",
+                    "password": "**********",
+                    "email": "some text",
+                    "firstName": "some text",
+                    "lastName": "some text",
+                    "type": "WORKER",
+                    "deliveryAddresses": [
+                        {
+                            "id": 17,
+                            "address": {
+                                "streetAddress": "via Di Bugno",
+                                "number": "12",
+                                "place": "Baselga di Pinè",
+                                "postalCode": "38042"
+                            },
+                            "shippingMethod": {
+                                "id": 1,
+                                "title": "Flat rate",
+                                "description": "Lets you charge a fixed rate for shipping."
+                            }
+                        },
+                        {
+                            "id": 92,
+                            "address": {
+                                "streetAddress": "via Galilei",
+                                "number": "4/A",
+                                "place": "Milano",
+                                "postalCode": "11111"
+                            },
+                            "shippingMethod": {
+                                "id": 2,
+                                "title": "Air mail",
+                                "description": "Fast and Furious!"
+                            }
+                        }
+                    ],
+                    "groups": [
+                        {
+                            "id": 1,
+                            "name": "Admin",
+                            "roles": [
+                                "SECURITY_VIEW",
+                                "SECURITY_EDIT",
+                                "WEB_ADMIN"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "UserType": {
+                "description": "",
+                "enum": [
+                    "ADMIN",
+                    "WORKER",
+                    "CUSTOMER"
+                ],
+                "type": "string"
+            },
+            "Session": {
+                "description": "",
+                "required": [
+                    "userInfo"
+                ],
+                "type": "object",
+                "properties": {
+                    "userInfo": {
+                        "$ref": "#/components/schemas/User",
+                        "description": ""
+                    },
+                    "locale": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "enviroment": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "accessToken": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "refreshToken": {
+                        "description": "",
+                        "type": "string"
+                    }
+                }
+            },
+            "UserLogin": {
+                "description": "",
+                "required": [
+                    "username",
+                    "password"
+                ],
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "locale": {
+                        "description": "",
+                        "type": "string"
+                    }
+                }
+            },
+            "UserStatus": {
+                "description": "",
+                "enum": [
+                    "Active",
+                    "ToConfirm"
+                ],
+                "type": "string"
+            },
+            "Topping": {
+                "description": "Any ingredient that can be added extra to the standard pizza",
+                "required": [
+                    "name",
+                    "enabled"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "description": "",
+                        "type": "boolean"
+                    }
+                }
+            },
+            "ProductCategory": {
+                "description": "",
+                "required": [
+                    "name",
+                    "enabled"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "description": "",
+                        "type": "boolean"
+                    }
+                }
+            },
+            "ToppingExtra": {
+                "description": "Price of the topping based on a dough and size",
+                "required": [
+                    "dough",
+                    "extra",
+                    "size",
+                    "topping",
+                    "enabled"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "integer"
+                    },
+                    "topping": {
+                        "$ref": "#/components/schemas/Topping",
+                        "description": ""
+                    },
+                    "dough": {
+                        "$ref": "#/components/schemas/VariationDough",
+                        "description": ""
+                    },
+                    "size": {
+                        "$ref": "#/components/schemas/VariationSize",
+                        "description": ""
+                    },
+                    "extra": {
+                        "description": "",
+                        "type": "number"
+                    },
+                    "enabled": {
+                        "description": "",
+                        "type": "boolean"
+                    }
+                }
+            },
+            "ProductCategoryDetails": {
+                "description": "",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/ProductCategory"
+                    }
+                ],
+                "properties": {
+                    "doughs": {
+                        "description": "",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/VariationDough"
+                        }
+                    },
+                    "sizes": {
+                        "description": "",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/VariationSize"
+                        }
+                    }
+                }
+            },
+            "ProductDetails": {
+                "description": "",
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/Product"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "doughs": {
+                                "description": "",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/VariationDough"
+                                },
+                                "readOnly": true
+                            },
+                            "sizes": {
+                                "description": "",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/VariationSize"
+                                },
+                                "readOnly": true
+                            },
+                            "toppingExtras": {
+                                "description": "",
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/ToppingExtra"
+                                },
+                                "readOnly": true
+                            }
+                        }
+                    }
+                ]
+            },
+            "Product": {
+                "description": "",
+                "required": [
+                    "name",
+                    "enabled",
+                    "price",
+                    "category"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "enabled": {
+                        "description": "",
+                        "type": "boolean"
+                    },
+                    "price": {
+                        "format": "double",
+                        "description": "",
+                        "type": "number"
+                    },
+                    "category": {
+                        "$ref": "#/components/schemas/ProductCategory",
+                        "description": ""
+                    }
+                }
+            },
+            "Dashboard": {
+                "description": "",
+                "required": [
+                    "customers",
+                    "products"
+                ],
+                "type": "object",
+                "properties": {
+                    "customers": {
+                        "$ref": "#/components/schemas/DashboardCustomers",
+                        "description": ""
+                    },
+                    "products": {
+                        "$ref": "#/components/schemas/DashBoardProducts",
+                        "description": ""
+                    }
+                }
+            },
+            "DashboardCustomers": {
+                "description": "",
+                "required": [
+                    "total",
+                    "toConfirm"
+                ],
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "description": "Total user of type 'Customer'",
+                        "type": "integer"
+                    },
+                    "toConfirm": {
+                        "description": "Number of 'Customer' users who need to confirm registration",
+                        "type": "integer"
+                    }
+                }
+            },
+            "DashBoardProducts": {
+                "description": "",
+                "required": [
+                    "totalEnable",
+                    "totalCategoriesEnable"
+                ],
+                "type": "object",
+                "properties": {
+                    "totalEnable": {
+                        "description": "Total of `Product` enabled.",
+                        "type": "integer"
+                    },
+                    "totalCategoriesEnable": {
+                        "description": "Total of `ProductCategory` enabled.",
+                        "type": "integer"
+                    }
+                }
+            },
+            "ErrorData": {
+                "description": "",
+                "required": [
+                    "userMessage",
+                    "userTitle"
+                ],
+                "type": "object",
+                "properties": {
+                    "userTitle": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "userMessage": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "internal": {
+                        "$ref": "#/components/schemas/ErrorInternal",
+                        "description": ""
+                    },
+                    "constraintErrors": {
+                        "description": "",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ConstraintError"
+                        }
+                    }
+                }
+            },
+            "ErrorInternal": {
+                "description": "",
+                "required": [
+                    "exception"
+                ],
+                "type": "object",
+                "properties": {
+                    "exception": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "stack": {
+                        "description": "",
+                        "type": "string"
+                    }
+                }
+            },
+            "ConstraintError": {
+                "description": "",
+                "type": "object",
+                "properties": {
+                    "fieldName": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "constraintsNotRespected": {
+                        "description": "",
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    }
+                }
+            },
+            "ErrorResponse": {
+                "description": "",
+                "required": [
+                    "error"
+                ],
+                "type": "object",
+                "properties": {
+                    "error": {
+                        "$ref": "#/components/schemas/ErrorData",
+                        "description": ""
+                    }
+                }
+            },
+            "Settings": {
+                "description": "",
+                "required": [
+                    "currencySymbol",
+                    "currencyDecimals"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier",
+                        "type": "integer"
+                    },
+                    "currencySymbol": {
+                        "description": "Currency symbol",
+                        "maxLength": 5,
+                        "minLength": 1,
+                        "type": "string"
+                    },
+                    "currencyDecimals": {
+                        "description": "Number of decimals used for currency",
+                        "maximum": 5,
+                        "minimum": 0,
+                        "type": "integer"
+                    }
+                },
+                "example": {
+                    "id": 1,
+                    "currencySymbol": "€",
+                    "currencyDecimals": 2
+                }
+            },
+            "VariationSize": {
+                "description": "",
+                "required": [
+                    "name",
+                    "extra",
+                    "enabled"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "extra": {
+                        "description": "",
+                        "type": "number"
+                    },
+                    "enabled": {
+                        "description": "",
+                        "type": "boolean"
+                    },
+                    "order": {
+                        "description": "",
+                        "type": "integer"
+                    }
+                }
+            },
+            "VariationDough": {
+                "description": "",
+                "required": [
+                    "name",
+                    "extra",
+                    "enabled"
+                ],
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "description": "Unique identifier",
+                        "type": "integer"
+                    },
+                    "name": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "description": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "extra": {
+                        "description": "",
+                        "type": "number"
+                    },
+                    "enabled": {
+                        "description": "",
+                        "type": "boolean"
+                    },
+                    "order": {
+                        "description": "",
+                        "type": "integer"
+                    }
+                }
+            },
+            "UserRegistrationInfo": {
+                "description": "",
+                "required": [
+                    "username",
+                    "email"
+                ],
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "password": {
+                        "description": "",
+                        "maxLength": 30,
+                        "minLength": 5,
+                        "type": "string"
+                    },
+                    "firstname": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "lastname": {
+                        "description": "",
+                        "type": "string"
+                    },
+                    "email": {
+                        "description": "",
+                        "type": "string"
+                    }
+                }
+            }
+        },
+        "securitySchemes": {
+            "BearerAuth": {
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "type": "http"
+            }
+        }
+    },
+    "security": [
+        {
+            "BearerAuth": [
+            ]
+        }
+    ]
+}
