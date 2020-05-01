@@ -1,7 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Project: Pizza Road
-  ~ File: strings_product.xml
+  ~ File: product_variations_view.xml
   ~
   ~ Created by fattazzo
   ~ Copyright © 2020 Gianluca Fattarsi. All rights reserved.
@@ -26,7 +25,8 @@
   ~ SOFTWARE.
   -->
 
-<resources>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-    <string name="product_add_to_cart">Ordina</string>
-</resources>
+</androidx.constraintlayout.widget.ConstraintLayout>

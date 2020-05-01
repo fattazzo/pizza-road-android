@@ -28,10 +28,12 @@
 package it.pizzaroad.activity.product
 
 import androidx.databinding.ObservableBoolean
+import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import it.pizzaroad.extensions.ioJob
 import it.pizzaroad.rest.api.models.Product
+import it.pizzaroad.rest.api.models.Variation
 import it.pizzaroad.rest.manager.impl.ProductsManager
 import java.math.BigDecimal
 import javax.inject.Inject
@@ -46,8 +48,14 @@ class ProductViewModel @Inject constructor(private val productsManager: Products
 
     val product = MutableLiveData<Product>(Product())
 
-    val prezzo = MutableLiveData<BigDecimal>(BigDecimal.ZERO)
     val quantita = MutableLiveData<Int>(1)
+    val variations = MutableLiveData<List<Variation>>(mutableListOf())
+
+    val prezzo = MediatorLiveData<BigDecimal>().apply {
+        value = BigDecimal.ZERO
+        addSource(variations) { calcolaPrezzo() }
+        addSource(quantita) { calcolaPrezzo() }
+    }
 
     val loading = ObservableBoolean(false)
 
@@ -60,7 +68,19 @@ class ProductViewModel @Inject constructor(private val productsManager: Products
         loading.set(true)
         ioJob {
             try {
-                product.postValue(productsManager.get(productId))
+                val prodottoCaricato = productsManager.get(productId);
+                product.postValue(prodottoCaricato)
+
+                if (prodottoCaricato?.defaultAttributes.orEmpty().isNotEmpty()) {
+                    val defAttributeIDs =
+                        prodottoCaricato?.defaultAttributes?.map { "${it.id}|${it.name}|${it.option}" }
+                            .orEmpty()
+                    val defaultVariations = prodottoCaricato?.variations?.filter { variation ->
+                        variation.attributes.map { "${it.id}|${it.name}|${it.option}" }
+                            .containsAll(defAttributeIDs)
+                    }.orEmpty().toMutableList()
+                    variations.postValue(defaultVariations)
+                }
             } finally {
                 loading.set(false)
             }
@@ -72,8 +92,15 @@ class ProductViewModel @Inject constructor(private val productsManager: Products
     }
 
     fun decreaseQuantita() {
-        if ((quantita.value ?: 0) > 0) {
+        if ((quantita.value ?: 0) > 1) {
             quantita.postValue((quantita.value ?: 0) - 1)
         }
+    }
+
+    private fun calcolaPrezzo() {
+        val prezzoVariazioni = variations.value?.map { BigDecimal(it.price) }?.fold(BigDecimal.ZERO, BigDecimal::add) ?: BigDecimal.ZERO
+        val qta = quantita.value ?: 1
+
+        prezzo.postValue(prezzoVariazioni.multiply(qta.toBigDecimal()))
     }
 }

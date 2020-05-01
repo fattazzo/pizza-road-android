@@ -46,6 +46,6 @@ class SplashActivity: AppCompatActivity(R.layout.splash) {
         Handler().postDelayed({
             startActivity(Intent(this,PizzeriaActivity::class.java))
             this.finish()
-        },500)
+        },1000)
     }
 }

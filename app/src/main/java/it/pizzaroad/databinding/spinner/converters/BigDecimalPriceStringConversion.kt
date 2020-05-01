@@ -38,7 +38,7 @@ object BigDecimalPriceStringConversion {
 
     @JvmStatic
     @InverseMethod("toBigDecimal")
-    fun toString(currentText: CharSequence, oldValue: BigDecimal, value: BigDecimal?): String {
+    fun toString(currentText: CharSequence, oldValue: BigDecimal?, value: BigDecimal?): String {
         try {
             // Don't return a different value if the parsed value// doesn't change
             val inView = currentText.toString().replace('.', ',')
