@@ -59,6 +59,12 @@ public class Settings {
   @SerializedName("currencyDecimals")
   private Integer currencyDecimals = null;
 
+  @SerializedName("minOrderRequestMinutes")
+  private Integer minOrderRequestMinutes = null;
+
+  @SerializedName("processingOrdersMinutesPartition")
+  private Integer processingOrdersMinutesPartition = null;
+
   public Settings id(Integer id) {
     this.id = id;
     return this;
@@ -115,6 +121,43 @@ public class Settings {
     this.currencyDecimals = currencyDecimals;
   }
 
+  public Settings minOrderRequestMinutes(Integer minOrderRequestMinutes) {
+    this.minOrderRequestMinutes = minOrderRequestMinutes;
+    return this;
+  }
+
+   /**
+   * Minimum time in minutes to request the order
+   * minimum: 0
+   * @return minOrderRequestMinutes
+  **/
+  @Schema(required = true, description = "Minimum time in minutes to request the order")
+  public Integer getMinOrderRequestMinutes() {
+    return minOrderRequestMinutes;
+  }
+
+  public void setMinOrderRequestMinutes(Integer minOrderRequestMinutes) {
+    this.minOrderRequestMinutes = minOrderRequestMinutes;
+  }
+
+  public Settings processingOrdersMinutesPartition(Integer processingOrdersMinutesPartition) {
+    this.processingOrdersMinutesPartition = processingOrdersMinutesPartition;
+    return this;
+  }
+
+   /**
+   * Get processingOrdersMinutesPartition
+   * @return processingOrdersMinutesPartition
+  **/
+  @Schema(required = true, description = "")
+  public Integer getProcessingOrdersMinutesPartition() {
+    return processingOrdersMinutesPartition;
+  }
+
+  public void setProcessingOrdersMinutesPartition(Integer processingOrdersMinutesPartition) {
+    this.processingOrdersMinutesPartition = processingOrdersMinutesPartition;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -127,12 +170,14 @@ public class Settings {
     Settings settings = (Settings) o;
     return Objects.equals(this.id, settings.id) &&
         Objects.equals(this.currencySymbol, settings.currencySymbol) &&
-        Objects.equals(this.currencyDecimals, settings.currencyDecimals);
+        Objects.equals(this.currencyDecimals, settings.currencyDecimals) &&
+        Objects.equals(this.minOrderRequestMinutes, settings.minOrderRequestMinutes) &&
+        Objects.equals(this.processingOrdersMinutesPartition, settings.processingOrdersMinutesPartition);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, currencySymbol, currencyDecimals);
+    return Objects.hash(id, currencySymbol, currencyDecimals, minOrderRequestMinutes, processingOrdersMinutesPartition);
   }
 
 
@@ -144,6 +189,8 @@ public class Settings {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    currencySymbol: ").append(toIndentedString(currencySymbol)).append("\n");
     sb.append("    currencyDecimals: ").append(toIndentedString(currencyDecimals)).append("\n");
+    sb.append("    minOrderRequestMinutes: ").append(toIndentedString(minOrderRequestMinutes)).append("\n");
+    sb.append("    processingOrdersMinutesPartition: ").append(toIndentedString(processingOrdersMinutesPartition)).append("\n");
     sb.append("}");
     return sb.toString();
   }

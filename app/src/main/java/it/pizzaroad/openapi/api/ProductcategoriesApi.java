@@ -29,8 +29,7 @@ package it.pizzaroad.openapi.api;
 
 import java.util.List;
 
-import it.pizzaroad.openapi.models.ProductCategory;
-import it.pizzaroad.openapi.models.ProductCategoryDetails;
+import it.pizzaroad.openapi.models.Category;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -40,65 +39,65 @@ import retrofit2.http.PUT;
 
 public interface ProductcategoriesApi {
   /**
-   * Create a ProductCategory
-   * Creates a new instance of a &#x60;ProductCategory&#x60;.
-   * @param body A new &#x60;ProductCategory&#x60; to be created. (required)
-   * @return Call&lt;ProductCategoryDetails&gt;
+   * Create a product Category
+   * Creates a new instance of a product &#x60;Category&#x60;.
+   * @param body A new product &#x60;Category&#x60; to be created. (required)
+   * @return Call&lt;Category&gt;
    */
   @Headers({
     "Content-Type:application/json"
   })
-  @POST("productcategories")
-  Call<ProductCategoryDetails> createProductCategory(
-                    @retrofit2.http.Body ProductCategoryDetails body    
+  @POST("product/categories/")
+  Call<Category> createProductCategory(
+                    @retrofit2.http.Body Category body    
   );
 
   /**
-   * Delete a ProductCategory
-   * Deletes an existing &#x60;ProductCategory&#x60;.
-   * @param productcategoryId A unique identifier for a &#x60;ProductCategory&#x60;. (required)
+   * Delete a product Category
+   * Deletes an existing product &#x60;Category&#x60;.
+   * @param categoryId A unique identifier for a &#x60;Category&#x60;. (required)
    * @return Call&lt;Void&gt;
    */
-  @DELETE("productcategories/{productcategoryId}")
+  @DELETE("product/categories/{categoryId}/")
   Call<Void> deleteProductCategory(
-            @retrofit2.http.Path("productcategoryId") Integer productcategoryId            
+            @retrofit2.http.Path("categoryId") Integer categoryId            
   );
 
   /**
-   * List All productcategories
-   * Gets a list of all &#x60;ProductCategory&#x60; entities.
-   * @param includeDisabled If true, the list of all entities include enabled and disabled &#x60;ProductCategory&#x60; (optional)
-   * @return Call&lt;List&lt;ProductCategory&gt;&gt;
+   * List All product categories
+   * Gets a list of all product &#x60;Category&#x60; entities.
+   * @param includeDisabled If true, the list of all entities include enabled and disabled &#x60;Category&#x60; (optional)
+   * @return Call&lt;List&lt;Category&gt;&gt;
    */
-  @GET("productcategories")
-  Call<List<ProductCategory>> getProductCategories(
-        @retrofit2.http.Query("includeDisabled") Boolean includeDisabled                
+  @GET("product/categories/")
+  Call<List<Category>> getProductCategories(
+                @retrofit2.http.Header("includeDisabled") Boolean includeDisabled        
   );
 
   /**
-   * Get a ProductCategory
-   * Gets the details of a single instance of a &#x60;ProductCategory&#x60;.
-   * @param productcategoryId A unique identifier for a &#x60;ProductCategory&#x60;. (required)
-   * @return Call&lt;ProductCategoryDetails&gt;
+   * Get a product Category
+   * Gets the details of a single instance of a product &#x60;Category&#x60;.
+   * @param categoryId A unique identifier for a &#x60;Category&#x60;. (required)
+   * @return Call&lt;Category&gt;
    */
-  @GET("productcategories/{productcategoryId}")
-  Call<ProductCategoryDetails> getProductCategory(
-            @retrofit2.http.Path("productcategoryId") Integer productcategoryId            
+  @GET("product/categories/{categoryId}/")
+  Call<Category> getProductCategory(
+            @retrofit2.http.Path("categoryId") Integer categoryId            
   );
 
   /**
-   * Update a ProductCategory
-   * Updates an existing &#x60;ProductCategory&#x60;.
-   * @param body Updated &#x60;ProductCategory&#x60; information. (required)
-   * @param productcategoryId A unique identifier for a &#x60;ProductCategory&#x60;. (required)
-   * @return Call&lt;ProductCategoryDetails&gt;
+   * Update a product Category
+   * Updates an existing product &#x60;Category&#x60;.
+   * @param body Updated &#x60;Category&#x60; information. (required)
+   * @param categoryId A unique identifier for a &#x60;Category&#x60;. (required)
+   * @return Call&lt;Category&gt;
    */
   @Headers({
     "Content-Type:application/json"
   })
-  @PUT("productcategories/{productcategoryId}")
-  Call<ProductCategoryDetails> updateProductCategory(
-                    @retrofit2.http.Body ProductCategoryDetails body    ,         @retrofit2.http.Path("productcategoryId") Integer productcategoryId            
+  @PUT("product/categories/{categoryId}/")
+  Call<Category> updateProductCategory(
+                    @retrofit2.http.Body Category body    ,         @retrofit2.http.Path("categoryId") Integer categoryId            
   );
 
 }

@@ -30,8 +30,8 @@ package it.pizzaroad.openapi.api;
 import java.io.File;
 import java.util.List;
 
-import it.pizzaroad.openapi.models.Product;
-import it.pizzaroad.openapi.models.ProductDetails;
+import it.pizzaroad.openapi.models.Item;
+import it.pizzaroad.openapi.models.ItemProduct;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.DELETE;
@@ -42,100 +42,102 @@ import retrofit2.http.PUT;
 
 public interface ProductsApi {
   /**
-   * Create a Product
-   * Creates a new instance of a &#x60;Product&#x60;.
-   * @param body A new &#x60;Product&#x60; to be created. (required)
-   * @return Call&lt;ProductDetails&gt;
+   * Create a ItemProduct
+   * Creates a new instance of a &#x60;ItemProduct&#x60;.
+   * @param body A new &#x60;ItemProduct&#x60; to be created. (required)
+   * @return Call&lt;ItemProduct&gt;
    */
   @Headers({
     "Content-Type:application/json"
   })
-  @POST("products")
-  Call<ProductDetails> createProduct(
-                    @retrofit2.http.Body ProductDetails body    
+  @POST("product/items")
+  Call<ItemProduct> createItemProduct(
+                    @retrofit2.http.Body ItemProduct body    
   );
 
   /**
-   * Delete a Product
-   * Deletes an existing &#x60;Product&#x60;.
-   * @param productId A unique identifier for a &#x60;Product&#x60;. (required)
+   * Delete a ItemProduct
+   * Deletes an existing &#x60;ItemProduct&#x60;.
+   * @param itemId A unique identifier for a &#x60;ItemProduct&#x60;. (required)
    * @return Call&lt;Void&gt;
    */
-  @DELETE("products/{productId}")
-  Call<Void> deleteProduct(
-            @retrofit2.http.Path("productId") Integer productId            
+  @DELETE("product/items/{itemId}")
+  Call<Void> deleteItemProduct(
+            @retrofit2.http.Path("itemId") Integer itemId            
   );
 
   /**
-   * Delete a Product image
-   * Deletes an existing &#x60;Product&#x60; image.
-   * @param productId A unique identifier for a &#x60;Product&#x60;. (required)
+   * Delete a ItemProduct image
+   * Deletes an existing &#x60;ItemProduct&#x60; image.
+   * @param itemId A unique identifier for a &#x60;ItemProduct&#x60;. (required)
    * @return Call&lt;Void&gt;
    */
-  @DELETE("products/{productId}/image")
-  Call<Void> deleteProductImage(
-            @retrofit2.http.Path("productId") Integer productId            
+  @DELETE("product/items/{itemId}/image")
+  Call<Void> deleteItemProductImage(
+            @retrofit2.http.Path("itemId") Integer itemId            
   );
 
   /**
-   * Get a Product
-   * Gets the details of a single instance of a &#x60;Product&#x60;.
-   * @param productId A unique identifier for a &#x60;Product&#x60;. (required)
-   * @return Call&lt;ProductDetails&gt;
+   * Get a ItemProduct
+   * Gets the details of a single instance of a &#x60;ItemProduct&#x60;.
+   * @param itemId A unique identifier for a &#x60;ItemProduct&#x60;. (required)
+   * @param includeInvalidPrices Include prices from disabled categories and prices equal to zero (optional, default to false)
+   * @return Call&lt;ItemProduct&gt;
    */
-  @GET("products/{productId}")
-  Call<ProductDetails> getProduct(
-            @retrofit2.http.Path("productId") Integer productId            
+  @GET("product/items/{itemId}")
+  Call<ItemProduct> getItemProduct(
+            @retrofit2.http.Path("itemId") Integer itemId            ,     @retrofit2.http.Query("includeInvalidPrices") Boolean includeInvalidPrices                
   );
 
   /**
-   * Get a Product image
-   * Gets a &#x60;Product&#x60; image.
-   * @param productId A unique identifier for a &#x60;Product&#x60;. (required)
+   * Get a ItemProduct image
+   * Gets a &#x60;ItemProduct&#x60; image.
+   * @param itemId A unique identifier for a &#x60;ItemProduct&#x60;. (required)
    * @return Call&lt;File&gt;
    */
-  @GET("products/{productId}/image")
-  Call<File> getProductImage(
-            @retrofit2.http.Path("productId") Integer productId            
+  @GET("product/items/{itemId}/image")
+  Call<File> getItemProductImage(
+            @retrofit2.http.Path("itemId") Integer itemId            
   );
 
   /**
-   * List All products
-   * Gets a list of all &#x60;Product&#x60; entities.
+   * List All ItemProduct
+   * Gets a list of all &#x60;ItemProduct&#x60; entities.
    * @param includeDisabled If true, the list of all entities include enabled and disabled &#x60;Product&#x60; (optional)
-   * @return Call&lt;List&lt;Product&gt;&gt;
+   * @param categoryId Filter all products by the category if present (optional)
+   * @return Call&lt;List&lt;Item&gt;&gt;
    */
-  @GET("products")
-  Call<List<Product>> getProducts(
-                @retrofit2.http.Header("includeDisabled") Boolean includeDisabled        
+  @GET("product/items")
+  Call<List<Item>> getItemProducts(
+                @retrofit2.http.Header("includeDisabled") Boolean includeDisabled        ,             @retrofit2.http.Header("categoryId") Integer categoryId        
   );
 
   /**
-   * Update a Product
-   * Updates an existing &#x60;Product&#x60;.
-   * @param body Updated &#x60;Product&#x60; information. (required)
-   * @param productId A unique identifier for a &#x60;Product&#x60;. (required)
-   * @return Call&lt;ProductDetails&gt;
+   * Update a ItemProduct
+   * Updates an existing &#x60;ItemProduct&#x60;.
+   * @param body Updated &#x60;ItemProduct&#x60; information. (required)
+   * @param itemId A unique identifier for a &#x60;ItemProduct&#x60;. (required)
+   * @return Call&lt;ItemProduct&gt;
    */
   @Headers({
     "Content-Type:application/json"
   })
-  @PUT("products/{productId}")
-  Call<ProductDetails> updateProduct(
-                    @retrofit2.http.Body ProductDetails body    ,         @retrofit2.http.Path("productId") Integer productId            
+  @PUT("product/items/{itemId}")
+  Call<ItemProduct> updateItemProduct(
+                    @retrofit2.http.Body ItemProduct body    ,         @retrofit2.http.Path("itemId") Integer itemId            
   );
 
   /**
-   * Update a Product image
-   * Updates an existing &#x60;Product&#x60; image.
+   * Update a ItemProduct image
+   * Updates an existing &#x60;ItemProduct&#x60; image.
    * @param file  (required)
-   * @param productId A unique identifier for a &#x60;Product&#x60;. (required)
+   * @param itemId A unique identifier for a &#x60;ItemProduct&#x60;. (required)
    * @return Call&lt;Void&gt;
    */
   @retrofit2.http.Multipart
-  @PUT("products/{productId}/image")
-  Call<Void> updateProductImage(
-                        @retrofit2.http.Part("file\"; filename=\"file") RequestBody file,         @retrofit2.http.Path("productId") Integer productId            
+  @PUT("product/items/{itemId}/image")
+  Call<Void> updateItemProductImage(
+                        @retrofit2.http.Part("file\"; filename=\"file") RequestBody file,         @retrofit2.http.Path("itemId") Integer itemId            
   );
 
 }

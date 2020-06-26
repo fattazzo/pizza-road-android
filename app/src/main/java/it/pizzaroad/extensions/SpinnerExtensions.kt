@@ -32,7 +32,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.databinding.InverseBindingListener
-import it.pizzaroad.rest.api.models.Category
+import it.pizzaroad.openapi.models.Category
 import it.pizzaroad.widget.adapters.category.CategoryArrayAdapter
 
 object SpinnerExtensions {

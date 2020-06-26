@@ -60,14 +60,14 @@ public class ToppingExtra {
   @SerializedName("dough")
   private VariationDough dough = null;
 
-  @SerializedName("size")
-  private VariationSize size = null;
-
   @SerializedName("extra")
   private BigDecimal extra = null;
 
   @SerializedName("enabled")
   private Boolean enabled = null;
+
+  @SerializedName("variationSize")
+  private VariationSize variationSize = null;
 
   public ToppingExtra id(Integer id) {
     this.id = id;
@@ -123,24 +123,6 @@ public class ToppingExtra {
     this.dough = dough;
   }
 
-  public ToppingExtra size(VariationSize size) {
-    this.size = size;
-    return this;
-  }
-
-   /**
-   * Get size
-   * @return size
-  **/
-  @Schema(required = true, description = "")
-  public VariationSize getSize() {
-    return size;
-  }
-
-  public void setSize(VariationSize size) {
-    this.size = size;
-  }
-
   public ToppingExtra extra(BigDecimal extra) {
     this.extra = extra;
     return this;
@@ -177,6 +159,24 @@ public class ToppingExtra {
     this.enabled = enabled;
   }
 
+  public ToppingExtra variationSize(VariationSize variationSize) {
+    this.variationSize = variationSize;
+    return this;
+  }
+
+   /**
+   * Get variationSize
+   * @return variationSize
+  **/
+  @Schema(required = true, description = "")
+  public VariationSize getVariationSize() {
+    return variationSize;
+  }
+
+  public void setVariationSize(VariationSize variationSize) {
+    this.variationSize = variationSize;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -190,14 +190,14 @@ public class ToppingExtra {
     return Objects.equals(this.id, toppingExtra.id) &&
         Objects.equals(this.topping, toppingExtra.topping) &&
         Objects.equals(this.dough, toppingExtra.dough) &&
-        Objects.equals(this.size, toppingExtra.size) &&
         Objects.equals(this.extra, toppingExtra.extra) &&
-        Objects.equals(this.enabled, toppingExtra.enabled);
+        Objects.equals(this.enabled, toppingExtra.enabled) &&
+        Objects.equals(this.variationSize, toppingExtra.variationSize);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, topping, dough, size, extra, enabled);
+    return Objects.hash(id, topping, dough, extra, enabled, variationSize);
   }
 
 
@@ -209,9 +209,9 @@ public class ToppingExtra {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    topping: ").append(toIndentedString(topping)).append("\n");
     sb.append("    dough: ").append(toIndentedString(dough)).append("\n");
-    sb.append("    size: ").append(toIndentedString(size)).append("\n");
     sb.append("    extra: ").append(toIndentedString(extra)).append("\n");
     sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
+    sb.append("    variationSize: ").append(toIndentedString(variationSize)).append("\n");
     sb.append("}");
     return sb.toString();
   }

@@ -34,13 +34,16 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import coil.api.load
-import it.pizzaroad.activity.product.ProductActivity
-import it.pizzaroad.databinding.ListItemProductBinding
-import it.pizzaroad.rest.api.models.Product
+import it.pizzaroad.R
+import it.pizzaroad.activity.items.pizza.PizzaActivity
+import it.pizzaroad.activity.items.product.ProductActivity
+import it.pizzaroad.databinding.ListItemItemBinding
+import it.pizzaroad.openapi.models.Item
+import it.pizzaroad.openapi.models.ItemType
 
 
 class ProductRecyclerViewAdapter(
-    private val products: MutableList<Product>
+    private val items: MutableList<Item>
 ) :
     RecyclerView.Adapter<ProductRecyclerViewAdapter.ProductViewHolder>() {
 
@@ -48,43 +51,52 @@ class ProductRecyclerViewAdapter(
 
     override fun onCreateViewHolder(viewGroup: ViewGroup, i: Int): ProductViewHolder {
         val binding =
-            ListItemProductBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
+            ListItemItemBinding.inflate(LayoutInflater.from(viewGroup.context), viewGroup, false)
         return ProductViewHolder(binding)
     }
 
     override fun onBindViewHolder(productViewHolder: ProductViewHolder, i: Int) {
-        productViewHolder.binding.product = products[i]
+        productViewHolder.binding.item = items[i]
         productViewHolder.binding.executePendingBindings()
 
-        if(products[i].images.isNotEmpty()) {
-            productViewHolder.binding.imageView.load(products[i].images[0].src)
+        if(items[i].imageUrl != null) {
+            productViewHolder.binding.imageView.load(items[i].imageUrl)
+        } else {
+            productViewHolder.binding.imageView.load(R.drawable.ic_pizza_road_logo_gray)
         }
     }
 
-    override fun getItemCount(): Int = products.size
+    override fun getItemCount(): Int = items.size
 
-    fun setProducts(products: List<Product>) {
-        this.products.clear()
-        this.products.addAll(products.toMutableList())
+    fun setProducts(items: List<Item>) {
+        this.items.clear()
+        this.items.addAll(items.toMutableList())
         notifyDataSetChanged()
     }
 
-    inner class ProductViewHolder(val binding: ListItemProductBinding) :
+    inner class ProductViewHolder(val binding: ListItemItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
         init {
             binding.root.setOnClickListener {
-                val intent = Intent(binding.root.context, ProductActivity::class.java)
+                val item = binding.item!!
+
                 val b = Bundle()
-                b.putInt(ProductActivity.EXTRA_PRODUCT_ID, binding.product!!.id)
-                b.putString(ProductActivity.EXTRA_PRODUCT_CATEGORY, binding.product!!.categories[0].name)
+                val intent = if(item.category.type == ItemType.PIZZA) {
+                    b.putInt(PizzaActivity.EXTRA_PIZZA_ID, binding.item!!.id)
+                    Intent(binding.root.context, PizzaActivity::class.java)
+                } else {
+                    b.putInt(ProductActivity.EXTRA_PRODUCT_ID, binding.item!!.id)
+                    Intent(binding.root.context, ProductActivity::class.java)
+                }
+
                 intent.putExtras(b)
-                startActivity(binding.root.context, intent,null)
+                startActivity(binding.root.context, intent, null)
             }
         }
     }
 
     interface ProductRecyclerViewAdapterListener {
-        fun onListItemSelected(product: Product)
+        fun onListItemSelected(product: Item)
     }
 }

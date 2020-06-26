@@ -27,10 +27,12 @@
   -->
 
 <resources>
-    <color name="colorPrimary">#b5cf52</color>
+    <color name="colorPrimary">#6FA13C</color>
     <color name="colorPrimaryDark">#217c40</color>
-    <color name="colorAccent">#e9ff83</color>
+    <color name="colorAccent">#56A52D</color>
 
     <color name="colorTextPrimary">#000000</color>
     <color name="colorTextInverted">#FFFFFF</color>
+
+    <color name="disabled">#818181</color>
 </resources>

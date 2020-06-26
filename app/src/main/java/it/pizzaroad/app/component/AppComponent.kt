@@ -28,10 +28,17 @@
 package it.pizzaroad.app.component
 
 import dagger.Component
+import it.pizzaroad.activity.account.AccountActivity
+import it.pizzaroad.activity.account.orders.OrdersActivity
+import it.pizzaroad.activity.auth.login.LoginActivity
+import it.pizzaroad.activity.cart.confirmation.CartConfirmationActivity
+import it.pizzaroad.activity.cart.order.CartOrderActivity
+import it.pizzaroad.activity.cart.shippingmethod.CartShippingMethodsActivity
+import it.pizzaroad.activity.items.pizza.PizzaActivity
+import it.pizzaroad.activity.items.product.ProductActivity
 import it.pizzaroad.activity.pizzeria.PizzeriaActivity
-import it.pizzaroad.activity.product.ProductActivity
-import it.pizzaroad.app.module.AppModule
-import it.pizzaroad.app.module.ProductsModule
+import it.pizzaroad.activity.splash.SplashActivity
+import it.pizzaroad.app.module.*
 import it.pizzaroad.app.module.viewmodel.ViewModelModule
 import javax.inject.Singleton
 
@@ -41,9 +48,31 @@ import javax.inject.Singleton
  *         date: 28/02/20
  */
 @Singleton
-@Component(modules = [AppModule::class, ProductsModule::class, ViewModelModule::class])
+@Component(
+    modules = [
+        AppModule::class,
+        SessionModule::class,
+        ItemsModule::class,
+        SettingsModule::class,
+        ShippingMethodsModule::class,
+        UsersModule::class,
+        OrdersModule::class,
+        ViewModelModule::class
+    ]
+)
 interface AppComponent {
 
+    fun inject(activity: SplashActivity)
+
     fun inject(activity: PizzeriaActivity)
+    fun inject(activity: LoginActivity)
     fun inject(activity: ProductActivity)
+    fun inject(activity: PizzaActivity)
+
+    fun inject(activity: CartOrderActivity)
+    fun inject(activity: CartShippingMethodsActivity)
+    fun inject(activity: CartConfirmationActivity)
+
+    fun inject(activity: AccountActivity)
+    fun inject(activity: OrdersActivity)
 }

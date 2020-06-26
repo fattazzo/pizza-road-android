@@ -41,7 +41,6 @@ package it.pizzaroad.openapi.models;
 
 import com.google.gson.annotations.SerializedName;
 
-import java.math.BigDecimal;
 import java.util.Objects;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -59,9 +58,6 @@ public class VariationSize {
 
   @SerializedName("description")
   private String description = null;
-
-  @SerializedName("extra")
-  private BigDecimal extra = null;
 
   @SerializedName("enabled")
   private Boolean enabled = null;
@@ -123,24 +119,6 @@ public class VariationSize {
     this.description = description;
   }
 
-  public VariationSize extra(BigDecimal extra) {
-    this.extra = extra;
-    return this;
-  }
-
-   /**
-   * Get extra
-   * @return extra
-  **/
-  @Schema(required = true, description = "")
-  public BigDecimal getExtra() {
-    return extra;
-  }
-
-  public void setExtra(BigDecimal extra) {
-    this.extra = extra;
-  }
-
   public VariationSize enabled(Boolean enabled) {
     this.enabled = enabled;
     return this;
@@ -190,14 +168,13 @@ public class VariationSize {
     return Objects.equals(this.id, variationSize.id) &&
         Objects.equals(this.name, variationSize.name) &&
         Objects.equals(this.description, variationSize.description) &&
-        Objects.equals(this.extra, variationSize.extra) &&
         Objects.equals(this.enabled, variationSize.enabled) &&
         Objects.equals(this.order, variationSize.order);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, name, description, extra, enabled, order);
+    return Objects.hash(id, name, description, enabled, order);
   }
 
 
@@ -209,7 +186,6 @@ public class VariationSize {
     sb.append("    id: ").append(toIndentedString(id)).append("\n");
     sb.append("    name: ").append(toIndentedString(name)).append("\n");
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
-    sb.append("    extra: ").append(toIndentedString(extra)).append("\n");
     sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
     sb.append("    order: ").append(toIndentedString(order)).append("\n");
     sb.append("}");

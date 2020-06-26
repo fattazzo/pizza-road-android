@@ -51,6 +51,7 @@
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" >
+        <item name="android:textColor">@color/colorPrimary</item>
     </style>
 
     <!-- Text -->

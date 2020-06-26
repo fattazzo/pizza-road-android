@@ -37,4 +37,7 @@
     <dimen name="font_size_medium">16sp</dimen>
     <dimen name="font_size_large">20sp</dimen>
     <dimen name="font_size_big">30sp</dimen>
+
+    <!-- Login -->
+    <dimen name="sign_button_loading_width">56dp</dimen>
 </resources>

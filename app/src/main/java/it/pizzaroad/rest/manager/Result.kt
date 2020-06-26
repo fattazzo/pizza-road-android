@@ -27,9 +27,11 @@
 
 package it.pizzaroad.rest.manager
 
+import it.pizzaroad.openapi.models.ErrorData
+
 /**
  * @author fattazzo
  *         <p/>
  *         date: 28/02/20
  */
-data class Result<T>(val value: T?, val error: Int?, val exception: Exception?)
+data class Result<T>(val value: T?, val error: Int?, val errorData: ErrorData?)

@@ -77,11 +77,13 @@ public interface ShippingmethodsApi {
   /**
    * List All shippingmethods
    * Gets a list of all &#x60;ShippingMethod&#x60; entities.
+   * @param includeDisabled If true, the list of all entities include enabled and disabled &#x60;Size&#x60; (optional, default to false)
    * @return Call&lt;List&lt;ShippingMethod&gt;&gt;
    */
   @GET("shippingmethods")
-  Call<List<ShippingMethod>> getShippingMethods();
-    
+  Call<List<ShippingMethod>> getShippingMethods(
+        @retrofit2.http.Query("includeDisabled") Boolean includeDisabled                
+  );
 
   /**
    * Update a ShippingMethod

@@ -53,8 +53,8 @@ public class Dashboard {
   @SerializedName("customers")
   private DashboardCustomers customers = null;
 
-  @SerializedName("products")
-  private DashBoardProducts products = null;
+  @SerializedName("pizzas")
+  private DashBoardPizzas pizzas = null;
 
   public Dashboard customers(DashboardCustomers customers) {
     this.customers = customers;
@@ -74,22 +74,22 @@ public class Dashboard {
     this.customers = customers;
   }
 
-  public Dashboard products(DashBoardProducts products) {
-    this.products = products;
+  public Dashboard pizzas(DashBoardPizzas pizzas) {
+    this.pizzas = pizzas;
     return this;
   }
 
    /**
-   * Get products
-   * @return products
+   * Get pizzas
+   * @return pizzas
   **/
   @Schema(required = true, description = "")
-  public DashBoardProducts getProducts() {
-    return products;
+  public DashBoardPizzas getPizzas() {
+    return pizzas;
   }
 
-  public void setProducts(DashBoardProducts products) {
-    this.products = products;
+  public void setPizzas(DashBoardPizzas pizzas) {
+    this.pizzas = pizzas;
   }
 
 
@@ -103,12 +103,12 @@ public class Dashboard {
     }
     Dashboard dashboard = (Dashboard) o;
     return Objects.equals(this.customers, dashboard.customers) &&
-        Objects.equals(this.products, dashboard.products);
+        Objects.equals(this.pizzas, dashboard.pizzas);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(customers, products);
+    return Objects.hash(customers, pizzas);
   }
 
 
@@ -118,7 +118,7 @@ public class Dashboard {
     sb.append("class Dashboard {\n");
     
     sb.append("    customers: ").append(toIndentedString(customers)).append("\n");
-    sb.append("    products: ").append(toIndentedString(products)).append("\n");
+    sb.append("    pizzas: ").append(toIndentedString(pizzas)).append("\n");
     sb.append("}");
     return sb.toString();
   }

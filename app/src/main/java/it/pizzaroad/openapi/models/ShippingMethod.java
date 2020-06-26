@@ -41,6 +41,8 @@ package it.pizzaroad.openapi.models;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -64,6 +66,9 @@ public class ShippingMethod {
 
   @SerializedName("enabled")
   private Boolean enabled = null;
+
+  @SerializedName("shippingTypes")
+  private List<ShippingType> shippingTypes = new ArrayList<ShippingType>();
 
   public ShippingMethod id(Integer id) {
     this.id = id;
@@ -155,6 +160,29 @@ public class ShippingMethod {
     this.enabled = enabled;
   }
 
+  public ShippingMethod shippingTypes(List<ShippingType> shippingTypes) {
+    this.shippingTypes = shippingTypes;
+    return this;
+  }
+
+  public ShippingMethod addShippingTypesItem(ShippingType shippingTypesItem) {
+    this.shippingTypes.add(shippingTypesItem);
+    return this;
+  }
+
+   /**
+   * Get shippingTypes
+   * @return shippingTypes
+  **/
+  @Schema(required = true, description = "")
+  public List<ShippingType> getShippingTypes() {
+    return shippingTypes;
+  }
+
+  public void setShippingTypes(List<ShippingType> shippingTypes) {
+    this.shippingTypes = shippingTypes;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -169,12 +197,13 @@ public class ShippingMethod {
         Objects.equals(this.title, shippingMethod.title) &&
         Objects.equals(this.description, shippingMethod.description) &&
         Objects.equals(this.type, shippingMethod.type) &&
-        Objects.equals(this.enabled, shippingMethod.enabled);
+        Objects.equals(this.enabled, shippingMethod.enabled) &&
+        Objects.equals(this.shippingTypes, shippingMethod.shippingTypes);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, title, description, type, enabled);
+    return Objects.hash(id, title, description, type, enabled, shippingTypes);
   }
 
 
@@ -188,6 +217,7 @@ public class ShippingMethod {
     sb.append("    description: ").append(toIndentedString(description)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    enabled: ").append(toIndentedString(enabled)).append("\n");
+    sb.append("    shippingTypes: ").append(toIndentedString(shippingTypes)).append("\n");
     sb.append("}");
     return sb.toString();
   }

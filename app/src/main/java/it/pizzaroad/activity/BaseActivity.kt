@@ -27,10 +27,14 @@
 
 package it.pizzaroad.activity
 
+import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import it.pizzaroad.activity.auth.login.LoginActivity
+import it.pizzaroad.app.session.AppSessionManager
 
 /**
  * @author fattazzo
@@ -58,5 +62,29 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == LoginActivity.REQUEST_CODE_LOGIN && resultCode == Activity.RESULT_OK) {
+            onUserLoggedIn()
+        }
+    }
+
+    protected open fun onUserLoggedIn() {}
+
+    protected open fun checkLogin(): Boolean = true
+
+    override fun onResume() {
+        super.onResume()
+        if (checkLogin()) showLoginIfNeeded()
+    }
+
+    fun showLoginIfNeeded() {
+        if (AppSessionManager.getAccessToken(this) == null || AppSessionManager.getRefreshToken(this) == null) {
+            val intent = Intent(this.applicationContext, LoginActivity::class.java)
+            this.startActivityForResult(intent, LoginActivity.REQUEST_CODE_LOGIN)
+        }
     }
 }

@@ -65,6 +65,9 @@ public class User {
   @SerializedName("status")
   private UserStatus status = null;
 
+  @SerializedName("socialType")
+  private SocialTypeEnum socialType = null;
+
   public User username(String username) {
     this.username = username;
     return this;
@@ -155,6 +158,24 @@ public class User {
     this.status = status;
   }
 
+  public User socialType(SocialTypeEnum socialType) {
+    this.socialType = socialType;
+    return this;
+  }
+
+   /**
+   * Get socialType
+   * @return socialType
+  **/
+  @Schema(required = true, description = "")
+  public SocialTypeEnum getSocialType() {
+    return socialType;
+  }
+
+  public void setSocialType(SocialTypeEnum socialType) {
+    this.socialType = socialType;
+  }
+
 
   @Override
   public boolean equals(java.lang.Object o) {
@@ -169,12 +190,13 @@ public class User {
         Objects.equals(this.email, user.email) &&
         Objects.equals(this.readOnly, user.readOnly) &&
         Objects.equals(this.type, user.type) &&
-        Objects.equals(this.status, user.status);
+        Objects.equals(this.status, user.status) &&
+        Objects.equals(this.socialType, user.socialType);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(username, email, readOnly, type, status);
+    return Objects.hash(username, email, readOnly, type, status, socialType);
   }
 
 
@@ -188,6 +210,7 @@ public class User {
     sb.append("    readOnly: ").append(toIndentedString(readOnly)).append("\n");
     sb.append("    type: ").append(toIndentedString(type)).append("\n");
     sb.append("    status: ").append(toIndentedString(status)).append("\n");
+    sb.append("    socialType: ").append(toIndentedString(socialType)).append("\n");
     sb.append("}");
     return sb.toString();
   }

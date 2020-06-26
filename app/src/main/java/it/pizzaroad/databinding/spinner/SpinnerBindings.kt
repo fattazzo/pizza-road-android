@@ -33,7 +33,7 @@ import it.pizzaroad.extensions.SpinnerExtensions
 import it.pizzaroad.extensions.SpinnerExtensions.setSpinnerCategoryEntries
 import it.pizzaroad.extensions.SpinnerExtensions.setSpinnerItemSelectedListener
 import it.pizzaroad.extensions.SpinnerExtensions.setSpinnerValue
-import it.pizzaroad.rest.api.models.Category
+import it.pizzaroad.openapi.models.Category
 
 object SpinnerBindings {
 

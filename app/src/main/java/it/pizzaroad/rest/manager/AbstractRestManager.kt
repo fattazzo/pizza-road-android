@@ -28,11 +28,10 @@
 package it.pizzaroad.rest.manager
 
 import android.content.Context
-import android.os.Handler
-import android.os.Looper
-import android.widget.Toast
+import it.pizzaroad.extensions.TAG
+import it.pizzaroad.rest.error.ErrorHandler
+import it.pizzaroad.rest.extensions.log
 import retrofit2.Call
-import retrofit2.Response
 
 /**
  * @author fattazzo
@@ -42,83 +41,24 @@ import retrofit2.Response
 abstract class AbstractRestManager(protected val context: Context) {
 
     protected fun <T> processResponse(
-        response: Response<T>,
-        onSuccessAction: ((T?) -> Unit)?,
-        onFailureAction: ((Int?) -> Unit?)?,
-        showErrorMessage: Boolean = true
-    ) {
-        try {
-            if (response.isSuccessful) {
-                onSuccessAction?.invoke(response.body())
-            } else {
-                if (showErrorMessage)
-                    showError(response.message())
-                onFailureAction?.invoke(response.code())
-            }
-        } catch (e: Exception) {
-            if (showErrorMessage)
-                showError()
-            onFailureAction?.invoke(null)
-        }
-    }
-
-    protected fun <T> processResponse(call: Call<T>, showErrorMessage: Boolean = true): T? {
-        return try {
-            val response = call.execute()
-            if (response.isSuccessful) {
-                response.body()
-            } else {
-                if (showErrorMessage)
-                    showError(response.message())
-                null
-            }
-        } catch (e: Exception) {
-            if (showErrorMessage)
-                showError()
-            null
-        }
-    }
-
-    protected fun <T> processResponseWithResult(
         call: Call<T>,
         showErrorMessage: Boolean = true
     ): Result<T> {
         return try {
             val response = call.execute()
+            response.log(TAG)
             if (response.isSuccessful) {
                 Result(response.body(), null, null)
             } else {
+                val errorData = ErrorHandler.parse(context,response);
                 if (showErrorMessage)
-                    showError(response.message())
-                Result(null, response.code(), null)
+                    ErrorHandler.showToastError(context,errorData)
+                Result(null, response.code(), errorData)
             }
         } catch (e: Exception) {
             if (showErrorMessage)
-                showError()
-            Result(null, null, e)
-        }
-    }
-
-    protected fun processVoidResponse(call: Call<Void>, showErrorMessage: Boolean = true): Boolean {
-        return try {
-            val response = call.execute()
-            if (response.isSuccessful) {
-                true
-            } else {
-                if (showErrorMessage)
-                    showError(response.message())
-                false
-            }
-        } catch (e: Exception) {
-            if (showErrorMessage)
-                showError()
-            false
-        }
-    }
-
-    private fun showError(message: String = "Errore!") {
-        Handler(Looper.getMainLooper()).post {
-            Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+                ErrorHandler.showToastError(context)
+            Result(null, 400, null)
         }
     }
 }

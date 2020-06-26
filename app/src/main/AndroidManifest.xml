@@ -51,8 +51,42 @@
             android:label="@string/app_name">
         </activity>
         <activity
-            android:name=".activity.product.ProductActivity"
+            android:name=".activity.auth.login.LoginActivity"
             android:label="@string/activity_product_name">
+        </activity>
+        <activity
+            android:name=".activity.items.product.ProductActivity"
+            android:label="@string/activity_product_name">
+        </activity>
+        <activity
+            android:name=".activity.items.pizza.PizzaActivity"
+            android:label="@string/activity_product_name">
+        </activity>
+        <activity
+            android:name=".activity.cart.order.CartOrderActivity"
+            android:label="@string/activity_cart_order_name">
+        </activity>
+        <activity
+            android:name=".activity.cart.shippingmethod.CartShippingMethodsActivity"
+            android:label="@string/activity_cart_shipping_methods_name">
+        </activity>
+        <activity
+            android:name=".activity.account.AccountActivity">
+        </activity>
+        <activity
+            android:name=".activity.account.orders.OrdersActivity"
+            android:label="@string/activity_orders_name">
+        </activity>
+        <activity
+            android:name=".activity.cart.confirmation.CartConfirmationActivity"
+            android:label="@string/activity_cart_confirmation_name">
+        </activity>
+        <activity
+            android:name=".activity.preferences.PreferencesActivity"
+            android:label="@string/activity_product_name">
+        </activity>
+        <activity
+            android:name=".activity.auth.login.social.google.GoogleSignInActivity">
         </activity>
     </application>
 

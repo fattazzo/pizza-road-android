@@ -28,9 +28,13 @@
 package it.pizzaroad.app
 
 import android.app.Application
+import com.jakewharton.threetenabp.AndroidThreeTen
+import de.mindpipe.android.logging.log4j.LogConfigurator
 import it.pizzaroad.app.component.AppComponent
 import it.pizzaroad.app.component.DaggerAppComponent
 import it.pizzaroad.app.module.AppModule
+import org.apache.log4j.Level
+
 
 /**
  * @author fattazzo
@@ -43,8 +47,13 @@ class PizzaRoadApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
+        AndroidThreeTen.init(this)
         initAppComponent()
+
+        val logConfigurator = LogConfigurator()
+        logConfigurator.isUseFileAppender = false
+        logConfigurator.rootLevel = Level.DEBUG
+        logConfigurator.configure()
     }
 
     private fun initAppComponent() {

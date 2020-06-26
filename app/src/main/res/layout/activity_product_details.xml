@@ -29,14 +29,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-    <import type="android.view.View"/>
+
+        <import type="android.view.View" />
+
         <import type="android.text.Html" />
 
         <import type="it.pizzaroad.databinding.spinner.converters.BigDecimalPriceStringConversion" />
 
+        <import type="it.pizzaroad.databinding.converters.CurrencyConverter" />
+
         <variable
             name="model"
-            type="it.pizzaroad.activity.product.ProductViewModel" />
+            type="it.pizzaroad.activity.items.product.ProductViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,141 +72,118 @@
                 app:lottie_rawRes="@raw/loading_pizza" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:orientation="vertical">
-
-        <include
-            android:id="@+id/app_bar_layout"
-            layout="@layout/app_bar_main" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp">
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/name_view"
-                android:layout_width="0dp"
+            <include
+                android:id="@+id/app_bar_layout"
+                layout="@layout/app_bar_main" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#ACA9A9"
-                android:padding="8dp"
-                android:text="@{model.product.name}"
-                android:textAppearance="@style/TextAppearance.Medium"
-                android:textColor="@color/colorTextInverted"
-                android:textStyle="bold|italic"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <TextView
-                android:id="@+id/description_view"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:padding="8dp"
-                android:text="@{Html.fromHtml(model.product.shortDescription).toString().replaceAll(`\n`, ``).trim()}"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/name_view" />
-
-            <ImageView
-                android:id="@+id/image_view"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
-                android:layout_margin="4dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/description_view" />
-
-            <LinearLayout
-                android:id="@+id/qta_layout"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="4dp"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/image_view"
-                app:layout_constraintTop_toBottomOf="@id/description_view">
-
-                <ImageButton
-                    android:id="@+id/decrease_qta_view"
-                    style="@style/Widget.AppCompat.Button.Colored"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:onClick="@{() -> model.decreaseQuantita()}"
-                    android:src="@drawable/ic_remove_black" />
+                android:background="@android:color/white">
 
                 <TextView
-                    android:id="@+id/qta_view"
+                    android:id="@+id/description_view"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="@{model.quantita.toString()}"
-                    android:textAppearance="@style/TextAppearance.Medium" />
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:text="@{model.product.description}"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                <ImageButton
-                    android:id="@+id/increase_qta_view"
+                <ImageView
+                    android:id="@+id/image_view"
+                    android:layout_width="150dp"
+                    android:layout_height="150dp"
+                    android:layout_margin="4dp"
+                    android:alpha="0.5"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/description_view" />
+
+                <LinearLayout
+                    android:id="@+id/qta_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="4dp"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/image_view"
+                    app:layout_constraintTop_toBottomOf="@id/description_view">
+
+                    <ImageButton
+                        android:id="@+id/decrease_qta_view"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:onClick="@{() -> model.decreaseQuantita()}"
+                        android:src="@drawable/ic_remove_black" />
+
+                    <TextView
+                        android:id="@+id/qta_view"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@{model.quantita.toString()}"
+                        android:textAppearance="@style/TextAppearance.Medium" />
+
+                    <ImageButton
+                        android:id="@+id/increase_qta_view"
+                        style="@style/Widget.AppCompat.Button.Colored"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:layout_weight="1"
+                        android:onClick="@{() -> model.increaseQuantita()}"
+                        android:src="@drawable/ic_add_black" />
+
+                </LinearLayout>
+
+                <Spinner
+                    android:id="@+id/spinner_prices"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/image_view"
+                    app:layout_constraintTop_toBottomOf="@id/qta_layout" />
+
+                <TextView
+                    android:id="@+id/price_view"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@{CurrencyConverter.toString(context,model.price)}"
+                    android:textAppearance="@style/TextAppearance.Large"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/image_view"
+                    app:layout_constraintTop_toBottomOf="@id/spinner_prices" />
+
+                <Button
+                    android:id="@+id/add_to_cart_button"
                     style="@style/Widget.AppCompat.Button.Colored"
                     android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_weight="1"
-                    android:onClick="@{() -> model.increaseQuantita()}"
-                    android:src="@drawable/ic_add_black" />
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_shopping_cart_black"
+                    android:text="@string/product_add_to_cart"
+                    android:onClick="addProductToCart"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/image_view"
+                    app:layout_constraintTop_toBottomOf="@id/price_view"/>
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <Button
-                android:id="@+id/add_to_cart_button"
-                style="@style/Widget.AppCompat.Button.Colored"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_shopping_cart_black"
-                android:text="@string/product_add_to_cart"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/image_view" />
-
-            <TextView
-                android:id="@+id/price_view"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:gravity="center"
-                android:text="@{BigDecimalPriceStringConversion.toString(priceView.getText(),model.prezzo,model.prezzo)}"
-                android:textAppearance="@style/TextAppearance.Large"
-                android:textColor="@color/colorPrimaryDark"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/add_to_cart_button"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/image_view"
-                app:layout_constraintTop_toBottomOf="@id/qta_layout" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="4dp">
-
-        <TextView
-            android:id="@+id/name2_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="#ACA9A9"
-            android:padding="8dp"
-            android:text="Variazioni"
-            android:textAppearance="@style/TextAppearance.Medium"
-            android:textColor="@color/colorTextInverted"
-            android:textStyle="bold|italic"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </LinearLayout>
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

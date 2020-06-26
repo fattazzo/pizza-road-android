@@ -3,5 +3,6 @@
   "artifactId": "pizza-road-android",
   "hideGenerationTimestamp": true,
   "modelPackage": "it.pizzaroad.openapi.models",
-  "apiPackage": "it.pizzaroad.openapi.api"
+  "apiPackage": "it.pizzaroad.openapi.api",
+  "dateLibrary": "threetenbp"
 }

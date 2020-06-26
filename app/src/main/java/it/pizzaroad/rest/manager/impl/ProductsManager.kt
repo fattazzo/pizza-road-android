@@ -28,28 +28,30 @@
 package it.pizzaroad.rest.manager.impl
 
 import android.content.Context
-import it.pizzaroad.rest.api.RetrofitBuilder
-import it.pizzaroad.rest.api.models.Product
-import it.pizzaroad.rest.api.services.products.ProductsRestService
+import it.pizzaroad.openapi.api.ProductsApi
+import it.pizzaroad.openapi.models.Item
+import it.pizzaroad.openapi.models.ItemProduct
+import it.pizzaroad.rest.RetrofitBuilder
 import it.pizzaroad.rest.manager.AbstractRestManager
 import it.pizzaroad.rest.manager.Result
 
 /**
  * @author fattazzo
  *         <p/>
- *         date: 28/02/20
+ *         date: 03/05/20
  */
 class ProductsManager(context: Context) : AbstractRestManager(context) {
 
-    private val productsRestService = RetrofitBuilder.client.create(ProductsRestService::class.java)
+    private val productsApi =
+        RetrofitBuilder.getSecureClient(context).create(ProductsApi::class.java)
 
-    fun list(itemsPerPage: Int = 10, categoryId: String?): Result<List<Product>> {
-        val response = productsRestService.list(itemsPerPage, categoryId)
-        return processResponseWithResult(response)
+    fun getProducts(categoryId: Int): Result<List<Item>> {
+        val response = productsApi.getItemProducts(false,categoryId)
+        return processResponse(response)
     }
 
-    fun get(productId: Int): Product? {
-        val response = productsRestService.get(productId)
+    fun getProduct(productId: Int): Result<ItemProduct> {
+        val response = productsApi.getItemProduct(productId,false)
         return processResponse(response)
     }
 }

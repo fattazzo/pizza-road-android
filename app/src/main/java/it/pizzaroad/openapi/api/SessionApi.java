@@ -29,6 +29,7 @@ package it.pizzaroad.openapi.api;
 
 import it.pizzaroad.openapi.models.Session;
 import it.pizzaroad.openapi.models.UserLogin;
+import it.pizzaroad.openapi.models.UserSocialLogin;
 import retrofit2.Call;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
@@ -46,6 +47,20 @@ public interface SessionApi {
   @POST("public/session")
   Call<Session> login(
                     @retrofit2.http.Body UserLogin body    
+  );
+
+  /**
+   * Create a session
+   * Create a &#x60;Session&#x60; information
+   * @param body Login user information (required)
+   * @return Call&lt;Session&gt;
+   */
+  @Headers({
+    "Content-Type:application/json"
+  })
+  @POST("public/session/social")
+  Call<Session> loginSocial(
+                    @retrofit2.http.Body UserSocialLogin body    
   );
 
   /**

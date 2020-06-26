@@ -29,4 +29,8 @@
 <resources>
 
     <string name="product_add_to_cart">Ordina</string>
+
+    <string name="product_dough">Impasto</string>
+    <string name="product_size">Dimensione</string>
+    <string name="product_toppings">Aggiunte</string>
 </resources>

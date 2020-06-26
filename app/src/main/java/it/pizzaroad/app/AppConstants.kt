@@ -35,5 +35,5 @@ package it.pizzaroad.app
 object AppConstants {
 
     // Rest API
-    const val REST_API_BASE_URL = "http://www.pizza-road.it/wp-json/wc/v1/"
+    const val REST_API_BASE_URL = "http://10.0.2.2:9090/pizza-shop-api/"
 }

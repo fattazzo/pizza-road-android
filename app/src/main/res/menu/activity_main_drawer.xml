@@ -35,21 +35,20 @@
             android:id="@+id/nav_pizzeria"
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/menu_pizzeria" />
+
         <item
-            android:id="@+id/nav_specialita"
-            android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_specialita" />
+            android:id="@+id/nav_account"
+            android:icon="@drawable/ic_account_circle_black"
+            android:title="_il mio account_" />
+
         <item
-            android:id="@+id/nav_shop"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_shop" />
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/ic_baseline_assignment"
+            android:title="@string/activity_orders_name" />
+
         <item
-            android:id="@+id/nav_blog"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_blog" />
-        <item
-            android:id="@+id/nav_chi_siamo"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="@string/menu_chi_siamo" />
+            android:id="@+id/nav_preferences"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/preferences" />
     </group>
 </menu>

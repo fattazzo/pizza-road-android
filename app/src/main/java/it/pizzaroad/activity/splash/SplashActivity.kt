@@ -32,20 +32,42 @@ import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
 import it.pizzaroad.R
 import it.pizzaroad.activity.pizzeria.PizzeriaActivity
+import it.pizzaroad.app.PizzaRoadApplication
+import it.pizzaroad.app.session.AppSessionManager
+import it.pizzaroad.rest.manager.impl.SettingsManager
+import javax.inject.Inject
 
 /**
  * @author fattazzo
  *         <p/>
  *         date: 28/02/20
  */
-class SplashActivity: AppCompatActivity(R.layout.splash) {
+class SplashActivity : AppCompatActivity(R.layout.splash) {
+
+    @Inject
+    lateinit var settingsManager: SettingsManager
 
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
 
+        (application as PizzaRoadApplication).appComponent.inject(this)
+
+        if (AppSessionManager.getAccessToken(this) != null && AppSessionManager.getRefreshToken(this) != null) {
+            Thread {
+                settingsManager.getSettings().value?.let {
+                    AppSessionManager.setSettings(this, it)
+                }
+                runOnUiThread { launchMainActivity() }
+            }.start()
+        } else {
+            launchMainActivity()
+        }
+    }
+
+    private fun launchMainActivity() {
         Handler().postDelayed({
-            startActivity(Intent(this,PizzeriaActivity::class.java))
+            startActivity(Intent(this, PizzeriaActivity::class.java))
             this.finish()
-        },1000)
+        }, 1000)
     }
 }

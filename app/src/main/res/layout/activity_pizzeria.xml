@@ -33,7 +33,7 @@
     <data>
         <variable
             name="model"
-            type="it.pizzaroad.activity.pizzeria.PizzeriaActivityViewModel" />
+            type="it.pizzaroad.activity.pizzeria.PizzeriaViewModel" />
     </data>
 
     <androidx.drawerlayout.widget.DrawerLayout
@@ -71,7 +71,7 @@
                     android:layout_height="140dp"
                     android:background="@android:color/black"
                     android:fitsSystemWindows="true"
-                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+                    android:theme="@style/AppTheme.AppBarOverlay">
 
                     <com.google.android.material.appbar.CollapsingToolbarLayout
                         android:id="@+id/toolbar_layout"

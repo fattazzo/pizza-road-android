@@ -44,4 +44,15 @@
 
     <string name="activity_product_name"></string>
 
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+
+    <string name="login">Login</string>
+    <string name="signup">Sign up</string>
+
+    <string name="app_exit_dialog_message">Do you really want to exit?</string>
+
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
 </resources>
